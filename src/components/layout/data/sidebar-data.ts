@@ -1,4 +1,4 @@
-import type { SidebarData } from '@/components/layout/types'
+import type { SidebarData } from '@/types/layout'
 import type { LoginResponse } from '@/types'
 import { Boxes, Contact, DollarSign, HelpCircle, LayoutDashboard, ListChecks, Package, Settings, ShoppingCart, Tags, Users2 } from 'lucide-react'
 

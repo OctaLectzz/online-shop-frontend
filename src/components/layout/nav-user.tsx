@@ -1,18 +1,11 @@
+import { LogoutDialog } from '@/components/logout-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 import { BadgeCheck, ChevronsUpDown, CreditCard, LogOut, Settings } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-export function NavUser({
-  user
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string | null
-  }
-}) {
+export function NavUser({ user, onLogoutConfirm, isPending }: { user: { name: string; email: string; avatar: string | null }; onLogoutConfirm: () => void; isPending: boolean }) {
   const { isMobile } = useSidebar()
 
   return (
@@ -67,10 +60,16 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <LogoutDialog
+              trigger={
+                <button className="hover:bg-accent hover:text-accent-foreground flex w-full items-center rounded-sm px-2 py-1.5 text-sm transition-colors outline-none select-none" role="menuitem">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span className="flex-1 text-left">Log out</span>
+                </button>
+              }
+              onConfirm={onLogoutConfirm}
+              isPending={isPending}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

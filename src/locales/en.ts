@@ -1,6 +1,7 @@
 const en = {
   public: {
-    loadingText: 'Loading...'
+    loadingText: 'Loading...',
+    cancelText: 'Cancel'
   },
   auth: {
     name: 'Name',
@@ -11,6 +12,17 @@ const en = {
     phoneNumber: 'Phone Number',
     loginBtn: 'Login',
     registerBtn: 'Register',
+    logoutBtn: 'Logout',
+    logoutTitle: 'Are you sure you want to log out?',
+    logoutSubtitle: 'You will be logged out of your account and need to login again to access the dashboard.',
+    response: {
+      successRegisterMsg: 'Register Successfully',
+      failedRegisterMsg: 'Register Failed',
+      successLoginMsg: 'Login Successfully',
+      failedLoginMsg: 'Login Failed',
+      successLogoutMsg: 'Logout Successfully',
+      failedLogoutMsg: 'Logout Failed'
+    },
     validate: {
       nameRequired: 'Name must be filled in',
       nameMaxLength: 'Maximum name is 50 characters',

@@ -1,4 +1,4 @@
-import { useProfile } from '@/hooks/useAuth'
+import { useProfile } from '@/hooks/use-auth'
 import type { LoginResponse } from '@/types'
 import Cookies from 'js-cookie'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
@@ -19,8 +19,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { data, isSuccess } = useProfile(!!token && !user)
 
   useEffect(() => {
-    if (isSuccess && data?.data) {
-      setUser(data.data)
+    if (isSuccess && data) {
+      setUser(data)
     }
   }, [isSuccess, data])
 

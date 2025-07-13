@@ -2,10 +2,10 @@ import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from '@/components/ui/sidebar'
+import type { NavCollapsible, NavGroup, NavItem, NavLink } from '@/types/layout'
 import { ChevronRight } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import type { NavCollapsible, NavGroup, NavItem, NavLink } from './types'
 
 export function NavGroup({ title, items }: NavGroup) {
   const { state, isMobile } = useSidebar()
