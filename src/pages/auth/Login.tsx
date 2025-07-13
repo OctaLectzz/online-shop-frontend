@@ -1,4 +1,3 @@
-// src/pages/auth/LoginPage.tsx
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -33,7 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-background">
+    <div className="dark:bg-background flex h-screen items-center justify-center bg-gray-100">
       <Card className="w-[400px] shadow-lg">
         <CardHeader>
           <CardTitle>Login</CardTitle>

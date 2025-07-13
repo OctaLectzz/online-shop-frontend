@@ -1,9 +1,9 @@
-import { login, register } from '@/api/auth'
-import { useAuth as useAuthContext } from '@/context/AuthContext'
+import { login, profile, register } from '@/api/auth'
+import { useAuth as useAuthContext } from '@/context/auth-context'
 import type { Login, Register } from '@/schemas/auth-schema'
 import type { APIErrorResponse } from '@/types'
 import i18n from '@/utils/i18n'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,7 +16,7 @@ export const useLogin = () => {
     mutationFn: (data: Login) => login(data),
     onSuccess: (res) => {
       setAuth(res.data)
-      navigate('/')
+      navigate('/dashboard')
     },
     onError: (err: AxiosError<APIErrorResponse>) => {
       const message = err.response?.data?.message || t('Login gagal')
@@ -36,5 +36,15 @@ export const useRegister = () => {
       const message = err.response?.data?.message || t('Register gagal')
       console.error('Register error:', message)
     }
+  })
+}
+
+export const useProfile = (enabled: boolean) => {
+  return useQuery({
+    queryKey: ['auth', 'profile'],
+    queryFn: profile,
+    enabled,
+    staleTime: 1000 * 60 * 5,
+    retry: false
   })
 }

@@ -9,3 +9,7 @@ export const login = (data: Login): Promise<{ data: LoginResponse }> => {
 export const register = (data: Register): Promise<{ data: RegisterResponse }> => {
   return server.post('/auth/register', data)
 }
+
+export const profile = (): Promise<{ data: LoginResponse['user'] }> => {
+  return server.get('/auth/profile')
+}

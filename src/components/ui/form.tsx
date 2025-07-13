@@ -94,4 +94,5 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField }
