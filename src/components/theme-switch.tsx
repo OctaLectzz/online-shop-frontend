@@ -4,9 +4,11 @@ import { useTheme } from '@/context/theme-context'
 import { cn } from '@/lib/utils'
 import { Check, Moon, Sun } from 'lucide-react'
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function ThemeSwitch() {
   const { theme, setTheme } = useTheme()
+  const { t } = useTranslation()
 
   /* Update theme-color meta tag
    * when theme is updated */
@@ -27,15 +29,15 @@ export function ThemeSwitch() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
+          {t('dashboard.layout.lightTheme')}
           <Check size={14} className={cn('ml-auto', theme !== 'light' && 'hidden')} />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
+          {t('dashboard.layout.darkTheme')}
           <Check size={14} className={cn('ml-auto', theme !== 'dark' && 'hidden')} />
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
+          {t('dashboard.layout.systemTheme')}
           <Check size={14} className={cn('ml-auto', theme !== 'system' && 'hidden')} />
         </DropdownMenuItem>
       </DropdownMenuContent>

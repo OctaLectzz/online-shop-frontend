@@ -1,6 +1,7 @@
 const en = {
   public: {
     loadingText: 'Loading...',
+    searchText: 'Search',
     cancelText: 'Cancel'
   },
   auth: {
@@ -21,7 +22,8 @@ const en = {
       successLoginMsg: 'Login Successfully',
       failedLoginMsg: 'Login Failed',
       successLogoutMsg: 'Logout Successfully',
-      failedLogoutMsg: 'Logout Failed'
+      failedLogoutMsg: 'Logout Failed',
+      sessionExpiredMsg: 'session Expired'
     },
     validate: {
       nameRequired: 'Name must be filled in',
@@ -34,6 +36,33 @@ const en = {
       passwordMinLength: 'Password must be at least 8 characters',
       confirmPasswordNotMatch: 'Passwords do not match',
       phoneNumberMaxLength: 'Maximum phone number is 15 characters'
+    }
+  },
+  dashboard: {
+    layout: {
+      generalGroup: 'General',
+      managementGroup: 'Management',
+      transactionGroup: 'Transaction',
+      dashboardMenu: 'Dashboard',
+      roleMenu: 'Roles',
+      userMenu: 'Users',
+      categoryMenu: 'Categories',
+      productMenu: 'Products',
+      tagMenu: 'Tags',
+      promoMenu: 'Promos',
+      paymentMenu: 'Payments',
+      orderMenu: 'Orders',
+      payMenu: 'Pays',
+      shipmentMenu: 'Shipments',
+      faqMenu: 'Faq',
+      contactMenu: 'Contact',
+      settingMenu: 'Setting',
+      profileMenu: 'Profile',
+      accountMenu: 'Account',
+      notificationMenu: 'Notification',
+      lightTheme: 'Light',
+      darkTheme: 'Dark',
+      systemTheme: 'System'
     }
   }
 }

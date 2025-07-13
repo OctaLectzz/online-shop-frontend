@@ -2,9 +2,11 @@ import { LogoutDialog } from '@/components/logout-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: { name: string; email: string; avatar: string | null }; onLogoutConfirm: () => void; isPending: boolean }) {
+  const { t } = useTranslation()
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -29,12 +31,12 @@ export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: { 
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link to="/settings">
-              Profile <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              {t('dashboard.layout.profileMenu')} <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/settings">
-              Settings <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              {t('dashboard.layout.settingMenu')} <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -44,7 +46,7 @@ export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: { 
         <LogoutDialog
           trigger={
             <button className="hover:bg-accent focus:bg-accent flex w-full cursor-pointer items-center justify-between rounded-sm px-2 py-1.5 text-left text-sm focus:outline-none">
-              Log out
+              {t('auth.logoutBtn')}
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </button>
           }

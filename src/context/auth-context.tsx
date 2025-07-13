@@ -1,7 +1,10 @@
 import { useProfile } from '@/hooks/use-auth'
 import type { LoginResponse } from '@/types'
+import i18n from '@/utils/i18n'
 import Cookies from 'js-cookie'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 interface AuthContextType {
   user: LoginResponse['user'] | null
@@ -16,13 +19,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<LoginResponse['user'] | null>(null)
   const [token, setToken] = useState<string | null>(() => Cookies.get('token') || null)
 
-  const { data, isSuccess } = useProfile(!!token && !user)
+  const navigate = useNavigate()
+  const t = i18n.t.bind(i18n)
+
+  const { data, isSuccess, isError } = useProfile(!!token && !user)
 
   useEffect(() => {
     if (isSuccess && data) {
       setUser(data)
     }
   }, [isSuccess, data])
+
+  useEffect(() => {
+    if (isError && token) {
+      logout()
+      toast.error(t('auth.response.sessionExpiredMsg'))
+      navigate('/')
+    }
+  }, [isError, token, navigate, t])
 
   const setAuth = (data: LoginResponse) => {
     setUser(data.user)

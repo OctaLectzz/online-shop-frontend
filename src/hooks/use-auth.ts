@@ -1,7 +1,7 @@
 import { login, logout, profile, register } from '@/api/auth'
 import { useAuth as useAuthContext } from '@/context/auth-context'
 import type { Login, Register } from '@/schemas/auth-schema'
-import type { APIErrorResponse } from '@/types'
+import type { APIErrorResponse, User } from '@/types'
 import i18n from '@/utils/i18n'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -64,7 +64,7 @@ export const useLogout = () => {
 }
 
 export const useProfile = (enabled: boolean) => {
-  return useQuery({
+  return useQuery<User, AxiosError>({
     queryKey: ['auth', 'profile'],
     queryFn: profile,
     enabled,

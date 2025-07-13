@@ -1,4 +1,4 @@
-import ProtectedRoute from '@/router/ProtectedRoute'
+import App from '@/App'
 import { createBrowserRouter } from 'react-router-dom'
 
 // Layouts
@@ -9,18 +9,29 @@ import Login from '@/pages/auth/Login'
 import Register from '@/pages/auth/Register'
 import Index from '@/pages/dashboard/Index'
 
-export const router = createBrowserRouter([
-  { path: '/', element: <Login /> },
-  { path: '/register', element: <Register /> },
+// Protected
+import ProtectedRoute from '@/router/ProtectedRoute'
 
+export const router = createBrowserRouter([
   {
-    path: '/dashboard',
-    element: <ProtectedRoute />,
+    path: '/',
+    element: <App />,
     children: [
+      // Auth
+      { index: true, element: <Login /> },
+      { path: 'register', element: <Register /> },
+
+      // Dashboard
       {
-        path: '',
-        element: <DashboardLayout />,
-        children: [{ path: '', element: <Index /> }]
+        path: 'dashboard',
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: '',
+            element: <DashboardLayout />,
+            children: [{ index: true, element: <Index /> }]
+          }
+        ]
       }
     ]
   }
