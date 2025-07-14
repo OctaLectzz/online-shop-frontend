@@ -1,8 +1,11 @@
+import { cn } from '@/lib/utils'
 import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  className?: string
+}
 
-function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, value = '', ...props }, ref) => {
   return (
     <input
       type={type}
@@ -13,9 +16,14 @@ function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         className
       )}
+      ref={ref}
+      value={value}
       {...props}
     />
   )
-}
+})
+
+Input.displayName = 'Input'
 
 export { Input }
+export type { InputProps }

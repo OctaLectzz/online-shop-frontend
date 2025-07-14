@@ -1,93 +1,166 @@
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { PasswordInput } from '@/components/ui/password-input'
 import { useRegister } from '@/hooks/use-auth'
 import { type Register, registerSchema } from '@/schemas/auth-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Facebook, Github } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 export default function RegisterPage() {
   const { t } = useTranslation()
-  const { mutate: registerUser, isPending } = useRegister()
+  const { mutate: register, isPending } = useRegister()
   const [formError, setFormError] = useState('')
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors }
-  } = useForm<Register>({
+
+  const form = useForm<Register>({
     resolver: zodResolver(registerSchema)
   })
 
   const onSubmit = (data: Register) => {
     setFormError('')
-    registerUser(data, {
-      onError: (err) => {
-        const apiErrors = err.response?.data?.errors
-        const msg = err.response?.data?.message || 'Registrasi gagal'
-        if (apiErrors) {
-          Object.entries(apiErrors).forEach(([field, messages]) => {
-            setError(field as keyof Register, { message: messages.join(', ') })
-          })
-        } else {
-          setFormError(msg)
-        }
-      }
-    })
+    register(data)
   }
 
   return (
-    <div className="dark:bg-background flex h-screen items-center justify-center bg-gray-100">
-      <Card className="w-[500px] shadow-lg">
-        <CardHeader>
-          <CardTitle>Register</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <Card className="gap-4">
+      <CardHeader>
+        <CardTitle className="text-lg tracking-tight">{t('auth.registerTitle')}</CardTitle>
+        <CardDescription className="max-w-96">
+          {t('auth.registerDescription')}{' '}
+          <Link to="/login" className="hover:text-primary underline underline-offset-4">
+            {t('auth.loginTitle')}
+          </Link>
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+            {/* Name */}
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name">{t('auth.name')}</Label>
-                <Input id="name" {...register('name')} />
-                {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
-              </div>
-              <div>
-                <Label htmlFor="username">{t('auth.username')}</Label>
-                <Input id="username" {...register('username')} />
-                {errors.username && <p className="text-xs text-red-500">{errors.username.message}</p>}
-              </div>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.name')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Username */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.username')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder="johndoe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div>
-              <Label htmlFor="email">{t('auth.email')}</Label>
-              <Input id="email" {...register('email')} />
-              {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="phone_number">{t('auth.phoneNumber')}</Label>
-              <Input id="phone_number" {...register('phone_number')} />
-              {errors.phone_number && <p className="text-xs text-red-500">{errors.phone_number.message}</p>}
-            </div>
+
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('auth.email')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder="name@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="password">{t('auth.password')}</Label>
-                <Input id="password" type="password" {...register('password')} />
-                {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
-              </div>
-              <div>
-                <Label htmlFor="confirmPassword">{t('auth.confirmPassword')}</Label>
-                <Input id="confirmPassword" type="password" {...register('confirmPassword')} />
-                {errors.confirmPassword && <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>}
-              </div>
+              {/* Password */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.password')}</FormLabel>
+                    <FormControl>
+                      <PasswordInput placeholder="********" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Confirm Password */}
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.confirmPassword')}</FormLabel>
+                    <FormControl>
+                      <PasswordInput placeholder="********" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            {formError && <p className="text-sm text-red-500">{formError}</p>}
-            <Button type="submit" className="w-full cursor-pointer" disabled={isPending}>
-              {isPending ? t('public.loadingText') : t('auth.registerBtn')}
+
+            {/* Error Msg */}
+            {formError && <p className="text-destructive text-sm font-medium">{formError}</p>}
+
+            <Button className="mt-2" disabled={isPending}>
+              Create Account
             </Button>
+
+            {/* Or Continue With */}
+            <div className="relative my-2">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background text-muted-foreground px-2">Or continue with</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Button variant="outline" className="w-full" type="button" disabled={isPending}>
+                <Github className="h-4 w-4" /> GitHub
+              </Button>
+              <Button variant="outline" className="w-full" type="button" disabled={isPending}>
+                <Facebook className="h-4 w-4" /> Facebook
+              </Button>
+            </div>
           </form>
-        </CardContent>
-      </Card>
-    </div>
+        </Form>
+      </CardContent>
+
+      {/* Terms & Service */}
+      <CardFooter>
+        <p className="text-muted-foreground px-8 text-center text-sm">
+          {t('auth.termsPrefix')}{' '}
+          <Link to="/terms" className="hover:text-primary underline underline-offset-4">
+            {t('auth.terms')}{' '}
+          </Link>
+          {t('auth.and')}{' '}
+          <Link to="/privacy" className="hover:text-primary underline underline-offset-4">
+            {t('auth.privacyPolicy')}
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
   )
 }

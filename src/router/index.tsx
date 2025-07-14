@@ -2,7 +2,8 @@ import App from '@/App'
 import { createBrowserRouter } from 'react-router-dom'
 
 // Layouts
-import DashboardLayout from '@/layouts/DashboardLayout'
+import AuthLayout from '@/layouts/auth-layout'
+import DashboardLayout from '@/layouts/dashboard-layout'
 
 // Pages
 import Login from '@/pages/auth/Login'
@@ -18,8 +19,15 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       // Auth
-      { index: true, element: <Login /> },
-      { path: 'register', element: <Register /> },
+      {
+        path: '',
+        element: <AuthLayout />,
+        children: [
+          { path: '', element: <Login /> },
+          { path: 'login', element: <Login /> },
+          { path: 'register', element: <Register /> }
+        ]
+      },
 
       // Dashboard
       {

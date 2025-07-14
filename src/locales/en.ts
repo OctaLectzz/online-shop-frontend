@@ -5,6 +5,16 @@ const en = {
     cancelText: 'Cancel'
   },
   auth: {
+    registerTitle: 'Create an account',
+    registerDescription: 'Enter your email and password to create an account. Already have an account?',
+    loginTitle: 'Login',
+    loginDescription: 'Enter your email and password below to log into your account. Does not have an account?',
+    termsPrefix: 'By clicking login, you agree to our',
+    terms: 'Terms of Service',
+    and: 'and',
+    privacyPolicy: 'Privacy Policy',
+    forgotPassword: 'Forgot Password?',
+    orContinueWith: 'Or Continue With',
     name: 'Name',
     username: 'Username',
     email: 'Email',
@@ -18,9 +28,9 @@ const en = {
     logoutSubtitle: 'You will be logged out of your account and need to login again to access the dashboard.',
     response: {
       successRegisterMsg: 'Register Successfully',
-      failedRegisterMsg: 'Register Failed',
+      failedRegisterMsg: 'Format is still wrong',
       successLoginMsg: 'Login Successfully',
-      failedLoginMsg: 'Login Failed',
+      failedLoginMsg: 'Email or Password is still incorrect',
       successLogoutMsg: 'Logout Successfully',
       failedLogoutMsg: 'Logout Failed',
       sessionExpiredMsg: 'session Expired'
@@ -43,6 +53,7 @@ const en = {
       generalGroup: 'General',
       managementGroup: 'Management',
       transactionGroup: 'Transaction',
+      otherGroup: 'Other',
       dashboardMenu: 'Dashboard',
       roleMenu: 'Roles',
       userMenu: 'Users',
