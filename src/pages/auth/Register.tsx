@@ -124,7 +124,7 @@ export default function RegisterPage() {
             {formError && <p className="text-destructive text-sm font-medium">{formError}</p>}
 
             <Button className="mt-2" disabled={isPending}>
-              Create Account
+              {isPending ? t('public.loadingText') : t('auth.registerBtn')}
             </Button>
 
             {/* Or Continue With */}
@@ -133,7 +133,7 @@ export default function RegisterPage() {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background text-muted-foreground px-2">Or continue with</span>
+                <span className="bg-background text-muted-foreground px-2">{t('auth.orContinueWith')}</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">

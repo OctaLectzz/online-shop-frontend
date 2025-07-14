@@ -22,7 +22,7 @@ const en = {
     confirmPassword: 'Confirm Password',
     phoneNumber: 'Phone Number',
     loginBtn: 'Login',
-    registerBtn: 'Register',
+    registerBtn: 'Create Account',
     logoutBtn: 'Logout',
     logoutTitle: 'Are you sure you want to log out?',
     logoutSubtitle: 'You will be logged out of your account and need to login again to access the dashboard.',

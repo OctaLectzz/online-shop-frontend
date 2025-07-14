@@ -9,9 +9,10 @@ import DashboardLayout from '@/layouts/dashboard-layout'
 import Login from '@/pages/auth/Login'
 import Register from '@/pages/auth/Register'
 import Index from '@/pages/dashboard/Index'
+import User from '@/pages/dashboard/user'
 
 // Protected
-import ProtectedRoute from '@/router/ProtectedRoute'
+import ProtectedRoute from '@/router/protected-route'
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +38,10 @@ export const router = createBrowserRouter([
           {
             path: '',
             element: <DashboardLayout />,
-            children: [{ index: true, element: <Index /> }]
+            children: [
+              { index: true, element: <Index /> },
+              { path: 'user', element: <User /> }
+            ]
           }
         ]
       }
