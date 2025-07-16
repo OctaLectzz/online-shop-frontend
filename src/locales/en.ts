@@ -2,7 +2,12 @@ const en = {
   public: {
     loadingText: 'Loading...',
     searchText: 'Search',
-    cancelText: 'Cancel'
+    cancelText: 'Cancel',
+    saveText: 'Save changes',
+    createText: 'Create',
+    editText: 'Edit',
+    deleteText: 'Delete',
+    saveDesc: "Click save when you're done."
   },
   auth: {
     registerTitle: 'Create an account',
@@ -74,6 +79,19 @@ const en = {
       lightTheme: 'Light',
       darkTheme: 'Dark',
       systemTheme: 'System'
+    },
+    user: {
+      title: 'User',
+      createDesc: 'Create new user here.',
+      editDesc: 'Update the user here.',
+      response: {
+        successCreateMsg: 'User created successfully',
+        failedCreateMsg: 'An error occurred while saving the user',
+        successUpdateMsg: 'User updated successfully',
+        failedUpdateMsg: 'An error occurred while saving the user',
+        successDeleteMsg: 'User deleted successfully',
+        failedDeleteMsg: 'An error occurred while deleting the user'
+      }
     }
   }
 }

@@ -2,9 +2,8 @@ import { DataTableColumnHeader } from '@/components/dashboard/data-table-column-
 import LongText from '@/components/long-text'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import type { User } from '@/types'
 import type { ColumnDef } from '@tanstack/react-table'
-import { callTypes, userTypes } from '../data/data'
-import type { User } from '../data/schema'
 import { DataTableRowActions } from './actions'
 
 export const columns: ColumnDef<User>[] = [
@@ -15,12 +14,10 @@ export const columns: ColumnDef<User>[] = [
     enableHiding: false
   },
   {
-    id: 'fullName',
+    accessorKey: 'name',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => {
-      const { firstName, lastName } = row.original
-      const fullName = `${firstName} ${lastName}`
-      return <LongText className="max-w-36">{fullName}</LongText>
+      return <LongText className="max-w-36">{row.getValue('name')}</LongText>
     },
     meta: { className: 'w-36' }
   },
@@ -30,49 +27,30 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => <div className="w-fit text-nowrap">{row.getValue('email')}</div>
   },
   {
-    accessorKey: 'phoneNumber',
+    accessorKey: 'phone_number',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Phone Number" />,
-    cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>
+    cell: ({ row }) => <div>{row.getValue('phone_number')}</div>
   },
   {
     accessorKey: 'status',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
-      const { status } = row.original
-      const badgeColor = callTypes.get(status)
+      const status = row.original.status
+      const isActive = status === true || status === 1
+      const badgeColor = isActive ? 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200' : 'bg-neutral-300/40 border-neutral-300'
+
       return (
         <div className="flex space-x-2">
           <Badge variant="outline" className={cn('capitalize', badgeColor)}>
-            {row.getValue('status')}
+            {isActive ? 'Active' : 'Inactive'}
           </Badge>
         </div>
       )
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-    enableHiding: false
-  },
-  {
-    accessorKey: 'role',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
-    cell: ({ row }) => {
-      const { role } = row.original
-      const userType = userTypes.find(({ value }) => value === role)
-
-      if (!userType) {
-        return null
-      }
-
-      return (
-        <div className="flex items-center gap-x-2">
-          {userType.icon && <userType.icon size={16} className="text-muted-foreground" />}
-          <span className="text-sm capitalize">{row.getValue('role')}</span>
-        </div>
-      )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      const status = row.getValue(id)
+      const isActive = status === true || status === 1
+      return value.includes(isActive ? 'active' : 'inactive')
     },
     enableHiding: false
   },

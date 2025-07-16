@@ -4,10 +4,11 @@ import { ConfirmDialog } from '@/components/dashboard/confirm-dialog'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { showSubmittedData } from '@/utils/show-submitted-data'
+import { useDeleteUser } from '@/hooks/use-user'
+import type { User } from '@/types'
 import { AlertTriangle } from 'lucide-react'
 import { useState } from 'react'
-import type { User } from '../data/schema'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   open: boolean
@@ -16,13 +17,19 @@ interface Props {
 }
 
 export function UserDeleteDialog({ open, onOpenChange, currentRow }: Props) {
+  const { t } = useTranslation()
   const [value, setValue] = useState('')
+  const { mutate: deleteUser, isPending } = useDeleteUser()
 
   const handleDelete = () => {
     if (value.trim() !== currentRow.username) return
 
-    onOpenChange(false)
-    showSubmittedData(currentRow, 'The following user has been deleted:')
+    deleteUser(currentRow.id, {
+      onSuccess: () => {
+        onOpenChange(false)
+        setValue('')
+      }
+    })
   }
 
   return (
@@ -30,10 +37,11 @@ export function UserDeleteDialog({ open, onOpenChange, currentRow }: Props) {
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.username}
+      disabled={value.trim() !== currentRow.username || isPending}
       title={
         <span className="text-destructive">
-          <AlertTriangle className="stroke-destructive mr-1 inline-block" size={18} /> Delete User
+          <AlertTriangle className="stroke-destructive mr-1 inline-block" size={18} />
+          {t('public.deleteText')} {t('dashboard.user.title')}
         </span>
       }
       desc={
@@ -41,7 +49,7 @@ export function UserDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           <p className="mb-2">
             Are you sure you want to delete <span className="font-bold">{currentRow.username}</span>?
             <br />
-            This action will permanently remove the user with the role of <span className="font-bold">{currentRow.role.toUpperCase()}</span> from the system. This cannot be undone.
+            This action will permanently remove the user from the system.
           </p>
 
           <Label className="my-2">
@@ -51,11 +59,11 @@ export function UserDeleteDialog({ open, onOpenChange, currentRow }: Props) {
 
           <Alert variant="destructive">
             <AlertTitle>Warning!</AlertTitle>
-            <AlertDescription>Please be carefull, this operation can not be rolled back.</AlertDescription>
+            <AlertDescription>This operation cannot be undone. All user data will be permanently deleted.</AlertDescription>
           </Alert>
         </div>
       }
-      confirmText="Delete"
+      confirmText={isPending ? t('public.loadingText') : t('public.deleteText')}
       destructive
     />
   )

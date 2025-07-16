@@ -1,16 +1,15 @@
 import { Button } from '@/components/ui/button'
 import UserProvider, { useUser } from '@/context/user-context'
+import { useUsers } from '@/hooks/use-user'
 import { UserPlus } from 'lucide-react'
 import { columns } from './components/columns'
 import { UserDeleteDialog } from './components/delete-dialog'
-import { UserFormDialog } from './components/form-dialog'
+import { UserForm } from './components/form'
 import { UserTable } from './components/table'
-import { userListSchema } from './data/schema'
-import { users } from './data/users'
 
 function UserContent() {
-  const { open, setOpen, currentRow, setCurrentRow } = useUser()
-  const userList = userListSchema.parse(users)
+  const { open, setOpen, currentRow } = useUser()
+  const { data: users = [], isPending } = useUsers()
 
   return (
     <>
@@ -22,7 +21,7 @@ function UserContent() {
         </div>
 
         <div className="flex gap-2">
-          <Button className="space-x-1" onClick={() => setOpen('add')}>
+          <Button className="space-x-1" onClick={() => setOpen('add')} disabled={isPending}>
             <span>Add User</span> <UserPlus size={18} />
           </Button>
         </div>
@@ -30,37 +29,16 @@ function UserContent() {
 
       {/* Table */}
       <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12">
-        <UserTable data={userList} columns={columns} />
+        <UserTable data={users} columns={columns} />
       </div>
 
-      {/* Dialog */}
-      <UserFormDialog key="user-add" open={open === 'add'} onOpenChange={() => setOpen('add')} />
-
+      {/* Dialogs */}
+      <UserForm key="user-add" open={open === 'add'} onOpenChange={() => setOpen('add')} />
       {currentRow && (
         <>
-          <UserFormDialog
-            key={`user-edit-${currentRow.id}`}
-            open={open === 'edit'}
-            onOpenChange={() => {
-              setOpen('edit')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
-            }}
-            currentRow={currentRow}
-          />
+          <UserForm key={`user-edit-${currentRow.id}`} open={open === 'edit'} onOpenChange={(isOpen) => setOpen(isOpen ? 'edit' : null)} currentRow={currentRow} />
 
-          <UserDeleteDialog
-            key={`user-delete-${currentRow.id}`}
-            open={open === 'delete'}
-            onOpenChange={() => {
-              setOpen('delete')
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
-            }}
-            currentRow={currentRow}
-          />
+          <UserDeleteDialog key={`user-delete-${currentRow.id}`} open={open === 'delete'} onOpenChange={(isOpen) => setOpen(isOpen ? 'delete' : null)} currentRow={currentRow} />
         </>
       )}
     </>

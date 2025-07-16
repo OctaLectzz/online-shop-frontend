@@ -1,16 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useUser } from '@/context/user-context'
+import type { User } from '@/types'
 import type { Row } from '@tanstack/react-table'
 import { Edit, Ellipsis, Trash } from 'lucide-react'
-import type { User } from '../data/schema'
 
-interface DataTableRowActionsProps {
-  row: Row<User>
+export interface DataTableRowActionsProps<TData = User> {
+  row: Row<TData>
 }
 
-export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
   const { setOpen, setCurrentRow } = useUser()
+  const user = row.original as User
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -25,7 +27,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           {/* Edit */}
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(row.original)
+              setCurrentRow(user)
               setOpen('edit')
             }}
           >
@@ -40,7 +42,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           {/* Delete */}
           <DropdownMenuItem
             onClick={() => {
-              setCurrentRow(row.original)
+              setCurrentRow(user)
               setOpen('delete')
             }}
             className="text-red-500!"

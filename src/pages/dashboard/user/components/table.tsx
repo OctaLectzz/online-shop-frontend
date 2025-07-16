@@ -4,11 +4,10 @@ import { DataTableViewOptions } from '@/components/dashboard/data-table-view-opt
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import type { User } from '@/types'
 import { type ColumnDef, type ColumnFiltersState, type RowData, type SortingState, type VisibilityState, flexRender, getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { X } from 'lucide-react'
 import { useState } from 'react'
-import { userTypes } from '../data/data'
-import type { User } from '../data/schema'
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -67,15 +66,10 @@ export function UserTable({ columns, data }: DataTableProps) {
                 title="Status"
                 options={[
                   { label: 'Active', value: 'active' },
-                  { label: 'Inactive', value: 'inactive' },
-                  { label: 'Invited', value: 'invited' },
-                  { label: 'Suspended', value: 'suspended' }
+                  { label: 'Inactive', value: 'inactive' }
                 ]}
               />
             )}
-
-            {/* Role */}
-            {table.getColumn('role') && <DataFilter column={table.getColumn('role')} title="Role" options={userTypes.map((t) => ({ ...t }))} />}
           </div>
           {isFiltered && (
             <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
