@@ -15,15 +15,15 @@ export const registerSchema = z
       .max(20, { message: t('auth.validate.usernameMaxLength') }),
     email: z.string().email({ message: t('auth.validate.emailFormat') }),
     password: z.string().min(8, { message: t('auth.validate.passwordMinLength') }),
-    confirmPassword: z.string().min(8, { message: t('auth.validate.passwordMinLength') }),
+    confirm_password: z.string().min(8, { message: t('auth.validate.passwordMinLength') }),
     phone_number: z
       .string()
       .max(15, { message: t('auth.validate.phoneNumberMaxLength') })
       .optional()
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirm_password, {
     message: t('auth.validate.confirmPasswordNotMatch'),
-    path: ['confirmPassword']
+    path: ['confirm_password']
   })
 export const loginSchema = z.object({
   email: z.string().email({ message: t('auth.validate.emailFormat') }),

@@ -20,16 +20,6 @@ export interface Address {
   updated_at: string
 }
 
-export interface Category {
-  id: number
-  slug: string
-  image: string | null
-  name: string
-  description: string | null
-  created_at: string
-  updated_at: string
-}
-
 export interface Tag {
   id: number
   name: string

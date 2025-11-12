@@ -5,6 +5,7 @@ import { RouterProvider } from 'react-router-dom'
 
 // CSS
 import 'react-toastify/dist/ReactToastify.css'
+import 'viewerjs/dist/viewer.css'
 import './index.css'
 
 // Providers

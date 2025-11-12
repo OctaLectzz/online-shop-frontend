@@ -1,4 +1,4 @@
-import type { UserForm } from '@/schemas/user-schema'
+import type { UserValues } from '@/schemas/user-schema'
 import type { APIErrorResponse } from '@/types'
 import type { User } from '@/types/user'
 import i18n from '@/utils/i18n'
@@ -27,7 +27,7 @@ export const useUser = (id: number) => {
 export const useCreateUser = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<User, AxiosError<APIErrorResponse>, UserForm>({
+  return useMutation<User, AxiosError<APIErrorResponse>, UserValues>({
     mutationFn: createUser,
     onSuccess: () => {
       toast.success(t('dashboard.user.response.successCreateMsg'))
@@ -38,7 +38,7 @@ export const useCreateUser = () => {
     },
     onError: (err: AxiosError<APIErrorResponse>) => {
       console.error(err.response?.data?.message || t('dashboard.user.response.failedCreateMsg'))
-      toast.error(t('dashboard.user.response.failedCreateMsg'))
+      toast.error(err.response?.data?.message || t('dashboard.user.response.failedCreateMsg'))
     }
   })
 }
@@ -46,7 +46,7 @@ export const useCreateUser = () => {
 export const useUpdateUser = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<User, AxiosError<APIErrorResponse>, UserForm & { id: number }>({
+  return useMutation<User, AxiosError<APIErrorResponse>, UserValues & { id: number }>({
     mutationFn: updateUser,
     onSuccess: (_, variables) => {
       toast.success(t('dashboard.user.response.successUpdateMsg'))
@@ -54,7 +54,7 @@ export const useUpdateUser = () => {
     },
     onError: (err: AxiosError<APIErrorResponse>) => {
       console.error(err.response?.data?.message || t('dashboard.user.response.failedUpdateMsg'))
-      toast.error(t('dashboard.user.response.failedUpdateMsg'))
+      toast.error(err.response?.data?.message || t('dashboard.user.response.failedUpdateMsg'))
     }
   })
 }

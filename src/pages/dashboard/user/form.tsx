@@ -1,6 +1,6 @@
 'use client'
 
-import { AvatarUpload } from '@/components/avatar-upload'
+import { ImageCircleUpload } from '@/components/image-circle-upload'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -8,27 +8,28 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Switch } from '@/components/ui/switch'
 import { useCreateUser, useUpdateUser } from '@/hooks/use-user'
-import { userCreateSchema, type UserForm, userUpdateSchema } from '@/schemas/user-schema'
+import { userCreateSchema, userUpdateSchema, type UserValues } from '@/schemas/user-schema'
 import type { User } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-interface UserFormProps {
+interface UserValuesProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   currentRow?: User
 }
 
-export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
+export function UserForm({ open, onOpenChange, currentRow }: UserValuesProps) {
+  const { mutate: createUser, isPending: isCreating } = useCreateUser()
+  const { mutate: updateUser, isPending: isUpdating } = useUpdateUser()
+
   const { t } = useTranslation()
   const isEdit = !!currentRow
   const schema = isEdit ? userUpdateSchema : userCreateSchema
-  const { mutate: createUser, isPending: isCreating } = useCreateUser()
-  const { mutate: updateUser, isPending: isUpdating } = useUpdateUser()
   const isSubmitting = isCreating || isUpdating
 
-  const form = useForm<UserForm>({
+  const form = useForm<UserValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       avatar: null,
@@ -36,7 +37,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
       username: '',
       email: '',
       password: '',
-      confirmPassword: '',
+      confirm_password: '',
       phone_number: '',
       status: true,
       isEdit: !!currentRow,
@@ -45,14 +46,14 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
             ...currentRow,
             avatar: typeof currentRow.avatar === 'string' ? null : currentRow.avatar,
             password: '',
-            confirmPassword: '',
+            confirm_password: '',
             status: Boolean(currentRow.status)
           }
         : {})
     }
   })
 
-  const onSubmit = (values: UserForm) => {
+  const onSubmit = (values: UserValues) => {
     if (isEdit && currentRow?.id) {
       updateUser(
         { ...values, id: currentRow.id },
@@ -102,7 +103,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                 render={({ field }) => (
                   <FormItem className="flex flex-col items-center">
                     <FormControl>
-                      <AvatarUpload value={field.value ?? null} onChange={field.onChange} currentAvatar={typeof currentRow?.avatar === 'string' ? currentRow.avatar : undefined} />
+                      <ImageCircleUpload value={field.value ?? null} onChange={field.onChange} currentImage={typeof currentRow?.avatar === 'string' ? currentRow.avatar : undefined} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -171,7 +172,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
 
                   <FormField
                     control={form.control}
-                    name="confirmPassword"
+                    name="confirm_password"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t('dashboard.user.confirmPassword')}</FormLabel>

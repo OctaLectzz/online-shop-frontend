@@ -1,18 +1,17 @@
-import { DataTableDataFilter } from '@/components/data-table/data-table-filter'
 import { DataTablePagination } from '@/components/data-table/data-table-pagination'
 import { DataTableViewOptions } from '@/components/data-table/data-table-view-options'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import UserProvider, { useUser } from '@/context/user-context'
-import { useUsers } from '@/hooks/use-user'
+import CategoryProvider, { useCategory } from '@/context/category-context'
+import { useCategories } from '@/hooks/use-category'
 import { type ColumnFiltersState, type RowData, type SortingState, type VisibilityState, flexRender, getCoreRowModel, getFacetedRowModel, getFacetedUniqueValues, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
-import { UserPlus, X } from 'lucide-react'
+import { PlusCircle, X } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { columns } from './columns'
-import { UserDeleteDialog } from './delete-dialog'
-import { UserForm } from './form'
+import { CategoryDeleteDialog } from './delete-dialog'
+import { CategoryForm } from './form'
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,9 +20,9 @@ declare module '@tanstack/react-table' {
   }
 }
 
-function UserContent() {
-  const { open, setOpen, currentRow } = useUser()
-  const { data: users = [], isPending } = useUsers()
+function CategoryContent() {
+  const { open, setOpen, currentRow } = useCategory()
+  const { data: categories = [], isPending } = useCategories()
 
   const { t } = useTranslation()
   const [rowSelection, setRowSelection] = useState({})
@@ -32,7 +31,7 @@ function UserContent() {
   const [sorting, setSorting] = useState<SortingState>([])
 
   const table = useReactTable({
-    data: users,
+    data: categories,
     columns,
     state: {
       sorting,
@@ -61,16 +60,16 @@ function UserContent() {
       {/* Header */}
       <div className="mb-2 flex flex-wrap items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">{t('dashboard.user.titleList')}</h2>
-          <p className="text-muted-foreground">{t('dashboard.user.desc')}</p>
+          <h2 className="text-2xl font-bold tracking-tight">{t('dashboard.category.titleList')}</h2>
+          <p className="text-muted-foreground">{t('dashboard.category.desc')}</p>
         </div>
 
         <div className="flex gap-2">
           <Button className="space-x-1" onClick={() => setOpen('add')} disabled={isPending}>
             <span>
-              {t('public.createText')} {t('dashboard.user.title')}
+              {t('public.createText')} {t('dashboard.category.title')}
             </span>
-            <UserPlus size={18} />
+            <PlusCircle size={18} />
           </Button>
         </div>
       </div>
@@ -82,19 +81,8 @@ function UserContent() {
           <div className="flex items-center justify-between">
             {/* Status */}
             <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
-              <Input placeholder={t('dashboard.user.filterText')} value={(table.getColumn('username')?.getFilterValue() as string) ?? ''} onChange={(event) => table.getColumn('username')?.setFilterValue(event.target.value)} className="h-8 w-[150px] lg:w-[250px]" />
-              <div className="flex gap-x-2">
-                {table.getColumn('status') && (
-                  <DataTableDataFilter
-                    column={table.getColumn('status')}
-                    title="Status"
-                    options={[
-                      { label: t('dashboard.user.activeLabel'), value: 'active' },
-                      { label: t('dashboard.user.inactiveLabel'), value: 'inactive' }
-                    ]}
-                  />
-                )}
-              </div>
+              <Input placeholder={t('dashboard.category.filterText')} value={(table.getColumn('name')?.getFilterValue() as string) ?? ''} onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)} className="h-8 w-[150px] lg:w-[250px]" />
+
               {isFiltered && (
                 <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
                   {t('public.resetText')}
@@ -159,22 +147,22 @@ function UserContent() {
       </div>
 
       {/* Dialogs */}
-      <UserForm key="user-add" open={open === 'add'} onOpenChange={() => setOpen('add')} />
+      <CategoryForm key="category-add" open={open === 'add'} onOpenChange={() => setOpen('add')} />
       {currentRow && (
         <>
-          <UserForm key={`user-edit-${currentRow.id}`} open={open === 'edit'} onOpenChange={(isOpen) => setOpen(isOpen ? 'edit' : null)} currentRow={currentRow} />
+          <CategoryForm key={`category-edit-${currentRow.id}`} open={open === 'edit'} onOpenChange={(isOpen) => setOpen(isOpen ? 'edit' : null)} currentRow={currentRow} />
 
-          <UserDeleteDialog key={`user-delete-${currentRow.id}`} open={open === 'delete'} onOpenChange={(isOpen) => setOpen(isOpen ? 'delete' : null)} currentRow={currentRow} />
+          <CategoryDeleteDialog key={`category-delete-${currentRow.id}`} open={open === 'delete'} onOpenChange={(isOpen) => setOpen(isOpen ? 'delete' : null)} currentRow={currentRow} />
         </>
       )}
     </>
   )
 }
 
-export default function User() {
+export default function Category() {
   return (
-    <UserProvider>
-      <UserContent />
-    </UserProvider>
+    <CategoryProvider>
+      <CategoryContent />
+    </CategoryProvider>
   )
 }

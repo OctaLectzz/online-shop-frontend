@@ -12,11 +12,11 @@ const en = {
     createText: 'Create',
     editText: 'Edit',
     deleteText: 'Delete',
+    warningText: 'WARNING!!!',
+    resetText: 'Reset',
     saveText: 'Save changes',
     orText: 'or',
     noResultText: 'No results found.',
-    dragAndDropText: 'Drag & drop',
-    clickToUploadText: 'Click to upload',
     saveDesc: "Click save when you're done.",
     deleteDesc: 'Are you sure you want to delete',
     commandDesc: 'Type a command or search...',
@@ -28,10 +28,20 @@ const en = {
     yes: 'Yes',
     no: 'No',
     pagination: {
+      rowsPerPage: 'Rows per page',
       firstPage: 'Go to first page',
       previousPage: 'Go to previous page',
       nextPage: 'Go to next page',
       lastPage: 'Go to last page'
+    },
+    image: {
+      imageText: 'Image',
+      cropDesc: 'Crop your image',
+      dragAndDropText: 'Drag & drop',
+      dropText: 'Drop the image here',
+      clickToUploadText: 'Click to upload',
+      validateImageMaxSize: 'Avatar must be smaller than 5120 KB.',
+      validateImageCroppedMaxSize: 'Cropped image is larger than 5120 KB. Try cropping smaller.'
     }
   },
   auth: {
@@ -66,16 +76,16 @@ const en = {
       sessionExpiredMsg: 'session Expired'
     },
     validate: {
-      nameRequired: 'Name must be filled in',
-      nameMaxLength: 'Maximum name is 50 characters',
-      usernameRequired: 'Username must be filled in',
-      usernameMaxLength: 'Maximum username is 20 characters',
-      emailFormat: 'Invalid email format',
-      emailAlready: 'Email already exists',
-      passwordRequired: 'Password must be filled in',
-      passwordMinLength: 'Password must be at least 8 characters',
-      confirmPasswordNotMatch: 'Passwords do not match',
-      phoneNumberMaxLength: 'Maximum phone number is 15 characters'
+      nameRequired: 'Name must be filled in.',
+      nameMaxLength: 'Maximum name is 50 characters.',
+      usernameRequired: 'Username must be filled in.',
+      usernameMaxLength: 'Maximum username is 20 characters.',
+      emailFormat: 'Invalid email format.',
+      emailAlready: 'Email already exists.',
+      passwordRequired: 'Password must be filled in.',
+      passwordMinLength: 'Password must be at least 8 characters.',
+      confirmPasswordNotMatch: 'Passwords do not match.',
+      phoneNumberMaxLength: 'Maximum phone number is 15 characters.'
     }
   },
   dashboard: {
@@ -109,9 +119,11 @@ const en = {
     },
     user: {
       title: 'User',
+      titleList: 'User List',
+      desc: 'Manage your users and their roles here.',
+      filterText: 'Filter users...',
       createDesc: 'Create new user here.',
       editDesc: 'Update the user here.',
-      cropDesc: 'Crop your avatar',
       deleteDesc1: 'This operation cannot be undone. All user data will be permanently deleted.',
       deleteDesc2: 'This action will permanently remove the user from the system.',
       deletePlaceholder: 'Enter username to confirm deletion.',
@@ -123,20 +135,21 @@ const en = {
       confirmPassword: 'Confirm Password',
       phoneNumber: 'Phone Number',
       status: 'Status',
+      activeLabel: 'Active',
+      inactiveLabel: 'Inactive',
       statusDesc: 'Whether the user is active or not',
       validate: {
-        avatarMaxSize: 'Avatar must be smaller than 5120 KB',
-        avatarCroppedMaxSize: 'Cropped image is larger than 5120 KB. Try cropping smaller',
-        nameRequired: 'Name must be filled in',
-        nameMaxLength: 'Maximum name is 50 characters',
-        usernameRequired: 'Username must be filled in',
-        usernameMaxLength: 'Maximum username is 20 characters',
-        emailFormat: 'Invalid email format',
-        emailAlready: 'Email already exists',
-        passwordRequired: 'Password must be filled in',
-        passwordMinLength: 'Password must be at least 8 characters',
-        confirmPasswordNotMatch: 'Passwords do not match',
-        phoneNumberMaxLength: 'Maximum phone number is 15 characters'
+        nameRequired: 'Name must be filled in.',
+        nameMaxLength: 'Maximum name is 50 characters.',
+        usernameRequired: 'Username must be filled in.',
+        usernameMaxLength: 'Maximum username is 20 characters.',
+        usernameUnique: 'Username already exists.',
+        emailFormat: 'Invalid email format.',
+        emailUnique: 'Email already exists.',
+        passwordRequired: 'Password must be filled in.',
+        passwordMinLength: 'Password must be at least 8 characters.',
+        confirmPasswordNotMatch: 'Passwords do not match.',
+        phoneNumberMaxLength: 'Maximum phone number is 15 characters.'
       },
       response: {
         successCreateMsg: 'User created successfully',
@@ -145,6 +158,32 @@ const en = {
         failedUpdateMsg: 'An error occurred while saving the user',
         successDeleteMsg: 'User deleted successfully',
         failedDeleteMsg: 'An error occurred while deleting the user'
+      }
+    },
+    category: {
+      title: 'Category',
+      titleList: 'Category List',
+      desc: 'Manage your categories and their images here.',
+      filterText: 'Filter categories...',
+      createDesc: 'Create new category here.',
+      editDesc: 'Update the category here.',
+      deleteDesc1: 'This operation cannot be undone. All category data will be permanently deleted.',
+      deleteDesc2: 'This action will permanently remove the category from the system.',
+      image: 'Image',
+      slug: 'Slug',
+      name: 'Name',
+      description: 'Description',
+      validate: {
+        nameRequired: 'Name must be filled in.',
+        nameMax: 'Maximum name is 50 characters.'
+      },
+      response: {
+        successCreateMsg: 'Category created successfully',
+        failedCreateMsg: 'An error occurred while saving the category',
+        successUpdateMsg: 'Category updated successfully',
+        failedUpdateMsg: 'An error occurred while saving the category',
+        successDeleteMsg: 'Category deleted successfully',
+        failedDeleteMsg: 'An error occurred while deleting the category'
       }
     }
   }

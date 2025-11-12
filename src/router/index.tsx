@@ -1,6 +1,9 @@
 import App from '@/App'
 import { createBrowserRouter } from 'react-router-dom'
 
+// Protected
+import ProtectedRoute from '@/router/protected-route'
+
 // Layouts
 import AuthLayout from '@/layouts/auth-layout'
 import DashboardLayout from '@/layouts/dashboard-layout'
@@ -8,11 +11,9 @@ import DashboardLayout from '@/layouts/dashboard-layout'
 // Pages
 import Login from '@/pages/auth/login'
 import Register from '@/pages/auth/register'
+import Category from '@/pages/dashboard/category'
 import Index from '@/pages/dashboard/index'
 import User from '@/pages/dashboard/user'
-
-// Protected
-import ProtectedRoute from '@/router/protected-route'
 
 export const router = createBrowserRouter([
   {
@@ -40,7 +41,8 @@ export const router = createBrowserRouter([
             element: <DashboardLayout />,
             children: [
               { index: true, element: <Index /> },
-              { path: 'user', element: <User /> }
+              { path: 'user', element: <User /> },
+              { path: 'category', element: <Category /> }
             ]
           }
         ]

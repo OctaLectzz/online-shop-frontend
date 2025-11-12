@@ -12,14 +12,14 @@ import Cropper from 'react-easy-crop'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-interface AvatarUploadProps {
+interface ImageUploadProps {
   value: File | null
   onChange: (file: File | null) => void
-  currentAvatar?: string
+  currentImage?: string
   className?: string
 }
 
-export function AvatarUpload({ value, onChange, currentAvatar, className }: AvatarUploadProps) {
+export function ImageCircleUpload({ value, onChange, currentImage, className }: ImageUploadProps) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [image, setImage] = useState<string | null>(null)
@@ -46,7 +46,7 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
   }, [])
 
   const onDropRejected = useCallback(() => {
-    alert(t('dashboard.user.validate.avatarMaxSize'))
+    alert(t('public.image.validateImageMaxSize'))
   }, [t])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -70,10 +70,10 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
       try {
         const croppedImage = await getCroppedImg(image, croppedAreaPixels)
 
-        const file = croppedImage instanceof File ? croppedImage : new File([croppedImage], 'avatar.jpg', { type: 'image/jpeg' })
+        const file = croppedImage instanceof File ? croppedImage : new File([croppedImage], 'image.jpg', { type: 'image/jpeg' })
 
         if (file.size > import.meta.env.VITE_MAX_FILE_KB * 1024) {
-          toast.error(t('dashboard.user.validate.avatarCroppedMaxSize'))
+          toast.error(t('public.image.validateImageCroppedMaxSize'))
           return
         }
 
@@ -96,26 +96,26 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
         <div {...getRootProps()} className={cn('my-4 flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed', 'bg-background border-border hover:border-primary', isDragActive && 'border-primary', 'transition-colors duration-200')}>
           <input {...getInputProps()} />
           {value ? (
-            <img src={URL.createObjectURL(value)} alt="Avatar preview" className="h-full w-full rounded-full object-cover" />
-          ) : currentAvatar ? (
-            <img src={currentAvatar} alt="Current avatar" className="h-full w-full rounded-full object-cover" />
+            <img src={URL.createObjectURL(value)} alt="Image preview" className="h-full w-full rounded-full object-cover" />
+          ) : currentImage ? (
+            <img src={currentImage} alt="Current image" className="h-full w-full rounded-full object-cover" />
           ) : (
             <div className={cn('text-center text-sm', 'text-muted-foreground')}>
               {isDragActive ? (
-                'Drop the image here'
+                t('public.image.dropText')
               ) : (
                 <>
-                  {t('public.dragAndDropText')} {t('public.orText')}
+                  {t('public.image.dragAndDropText')} {t('public.orText')}
                   <br />
-                  {t('public.clickToUploadText')}
+                  {t('public.image.clickToUploadText')}
                 </>
               )}
             </div>
           )}
         </div>
 
-        {(value || currentAvatar) && (
-          <button type="button" onClick={handleRemove} className={cn('absolute -top-2 -right-2 rounded-full p-1 shadow-sm', 'bg-destructive text-destructive-foreground', 'hover:bg-destructive/90', 'transition-colors duration-200')} aria-label="Remove avatar">
+        {(value || currentImage) && (
+          <button type="button" onClick={handleRemove} className={cn('absolute -top-2 -right-2 rounded-full p-1 shadow-sm', 'bg-destructive text-destructive-foreground', 'hover:bg-destructive/90', 'transition-colors duration-200')} aria-label="Remove image">
             <X className="h-4 w-4" />
           </button>
         )}
@@ -124,8 +124,8 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t('dashboard.user.avatar')}</DialogTitle>
-            <DialogDescription>{t('dashboard.user.cropDesc')}</DialogDescription>
+            <DialogTitle>{t('public.image.imageText')}</DialogTitle>
+            <DialogDescription>{t('public.image.cropDesc')}</DialogDescription>
           </DialogHeader>
 
           <div className="relative h-64 w-full">

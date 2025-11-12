@@ -1,10 +1,13 @@
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
+import ImagePreview from '@/components/image-preview'
 import LongText from '@/components/long-text'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/context/user-context'
 import { cn } from '@/lib/utils'
 import type { User } from '@/types/user'
+import { getInitials } from '@/utils/get-initials'
 import type { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
 import { Edit, Trash } from 'lucide-react'
@@ -39,6 +42,28 @@ function UserActionsCell({ user }: { user: User }) {
 
 export const columns: ColumnDef<User>[] = [
   {
+    accessorKey: 'avatar',
+    header: ({ column }) => <DataTableColumnHeader column={column} title={t('dashboard.user.avatar')} />,
+    cell: ({ row }) => {
+      const value = row.original.avatar as string | File | null | undefined
+
+      const imgUrl = typeof value === 'string' ? value : value instanceof File ? URL.createObjectURL(value) : undefined
+
+      return (
+        <div className="flex justify-center">
+          {imgUrl ? (
+            <ImagePreview src={imgUrl} alt={row.original.name} className="h-10 w-10 cursor-zoom-in rounded-lg border object-cover" />
+          ) : (
+            <Avatar className="h-10 w-10 rounded-lg">
+              <AvatarFallback className="rounded-lg">{getInitials(row.original.name)}</AvatarFallback>
+            </Avatar>
+          )}
+        </div>
+      )
+    },
+    meta: { className: 'w-16 text-center' }
+  },
+  {
     accessorKey: 'username',
     header: ({ column }) => <DataTableColumnHeader column={column} title={t('dashboard.user.username')} />,
     cell: ({ row }) => <LongText className="max-w-36">{row.getValue('username')}</LongText>,
@@ -68,12 +93,12 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const status = row.original.status
       const isActive = status === true || status === 1
-      const badgeColor = isActive ? 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200' : 'bg-neutral-300/40 border-neutral-300'
+      const badgeColor = isActive ? 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200' : 'bg-red-300/40 border-red-300'
 
       return (
         <div className="flex space-x-2">
           <Badge variant="outline" className={cn('capitalize', badgeColor)}>
-            {isActive ? 'Active' : 'Inactive'}
+            {isActive ? t('dashboard.user.activeLabel') : t('dashboard.user.inactiveLabel')}
           </Badge>
         </div>
       )

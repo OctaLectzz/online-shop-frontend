@@ -7,6 +7,7 @@ import { getInitials } from '@/utils/get-initials'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import ImagePreview from './image-preview'
 
 export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: User; onLogoutConfirm: () => void; isPending: boolean }) {
   const { t } = useTranslation()
@@ -40,10 +41,20 @@ export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: Us
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium">{user.name}</p>
-            <p className="text-muted-foreground text-xs">{user.email}</p>
+        <DropdownMenuLabel className="flex font-normal">
+          <div className="flex items-center gap-2 text-left text-sm">
+            {avatarSrc ? (
+              <ImagePreview src={avatarSrc} alt={user.name} className="h-9 w-9 cursor-zoom-in rounded-lg border object-cover" />
+            ) : (
+              <Avatar className="h-9 w-9 rounded-lg">
+                <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
+              </Avatar>
+            )}
+
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <span className="truncate font-semibold">{user.name}</span>
+              <span className="truncate text-xs">{user.email}</span>
+            </div>
           </div>
         </DropdownMenuLabel>
 

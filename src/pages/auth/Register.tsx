@@ -107,7 +107,7 @@ export default function RegisterPage() {
               {/* Confirm Password */}
               <FormField
                 control={form.control}
-                name="confirmPassword"
+                name="confirm_password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('auth.confirmPassword')}</FormLabel>

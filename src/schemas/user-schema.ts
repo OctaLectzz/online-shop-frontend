@@ -20,7 +20,7 @@ export const userSchema = z
       .min(8, { message: t('dashboard.user.validate.passwordMinLength') })
       .optional()
       .nullable(),
-    confirmPassword: z.string().optional().nullable(),
+    confirm_password: z.string().optional().nullable(),
     phone_number: z
       .string()
       .max(15, { message: t('dashboard.user.validate.phoneNumberMaxLength') })
@@ -29,22 +29,22 @@ export const userSchema = z
     status: z.boolean(),
     isEdit: z.boolean()
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirm_password, {
     message: t('dashboard.user.validate.confirmPasswordNotMatch'),
-    path: ['confirmPassword']
+    path: ['confirm_password']
   })
 
 export const userCreateSchema = userSchema
   .extend({
     password: z.string().min(8, { message: t('dashboard.user.validate.passwordMinLength') }),
-    confirmPassword: z.string().min(8, { message: t('dashboard.user.validate.passwordMinLength') })
+    confirm_password: z.string().min(8, { message: t('dashboard.user.validate.passwordMinLength') })
   })
   .superRefine((data, ctx) => {
-    if (data.password !== data.confirmPassword) {
+    if (data.password !== data.confirm_password) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: t('dashboard.user.validate.confirmPasswordNotMatch'),
-        path: ['confirmPassword']
+        path: ['confirm_password']
       })
     }
   })
@@ -52,18 +52,18 @@ export const userCreateSchema = userSchema
 export const userUpdateSchema = userSchema
   .extend({
     password: z.string().optional().nullable(),
-    confirmPassword: z.string().optional().nullable()
+    confirm_password: z.string().optional().nullable()
   })
   .superRefine((data, ctx) => {
-    if ((data.password || data.confirmPassword) && data.password !== data.confirmPassword) {
+    if ((data.password || data.confirm_password) && data.password !== data.confirm_password) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: t('dashboard.user.validate.confirmPasswordNotMatch'),
-        path: ['confirmPassword']
+        path: ['confirm_password']
       })
     }
   })
 
-export type UserForm = z.infer<typeof userSchema>
+export type UserValues = z.infer<typeof userSchema>
 export type UserCreateFormValues = z.infer<typeof userCreateSchema>
 export type UserUpdateFormValues = z.infer<typeof userUpdateSchema>
