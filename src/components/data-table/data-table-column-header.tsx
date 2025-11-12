@@ -3,6 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { cn } from '@/lib/utils'
 import type { Column } from '@tanstack/react-table'
 import { ArrowDownIcon, ArrowUpDown, ArrowUpIcon, EyeOff } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>
@@ -10,6 +11,8 @@ interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes
 }
 
 export function DataTableColumnHeader<TData, TValue>({ column, title, className }: DataTableColumnHeaderProps<TData, TValue>) {
+  const { t } = useTranslation()
+
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>
   }
@@ -26,18 +29,18 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className 
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
-            Asc
+            {t('public.asc')}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDownIcon className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
-            Desc
+            {t('public.desc')}
           </DropdownMenuItem>
           {column.getCanHide() && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
                 <EyeOff className="text-muted-foreground/70 mr-2 h-3.5 w-3.5" />
-                Hide
+                {t('public.hide')}
               </DropdownMenuItem>
             </>
           )}

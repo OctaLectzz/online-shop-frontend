@@ -7,8 +7,9 @@ import { cn } from '@/lib/utils'
 import type { Column } from '@tanstack/react-table'
 import { Check, PlusCircle } from 'lucide-react'
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 
-interface DataFilterProps<TData, TValue> {
+interface DataTableDataFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
   options: {
@@ -18,7 +19,8 @@ interface DataFilterProps<TData, TValue> {
   }[]
 }
 
-export function DataFilter<TData, TValue>({ column, title, options }: DataFilterProps<TData, TValue>) {
+export function DataTableDataFilter<TData, TValue>({ column, title, options }: DataTableDataFilterProps<TData, TValue>) {
+  const { t } = useTranslation()
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as string[])
 
@@ -90,7 +92,7 @@ export function DataFilter<TData, TValue>({ column, title, options }: DataFilter
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem onSelect={() => column?.setFilterValue(undefined)} className="justify-center text-center">
-                    Clear filters
+                    {t('public.clearFilterBtn')}
                   </CommandItem>
                 </CommandGroup>
               </>

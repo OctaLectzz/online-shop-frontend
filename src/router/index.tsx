@@ -6,9 +6,9 @@ import AuthLayout from '@/layouts/auth-layout'
 import DashboardLayout from '@/layouts/dashboard-layout'
 
 // Pages
-import Login from '@/pages/auth/Login'
-import Register from '@/pages/auth/Register'
-import Index from '@/pages/dashboard/Index'
+import Login from '@/pages/auth/login'
+import Register from '@/pages/auth/register'
+import Index from '@/pages/dashboard/index'
 import User from '@/pages/dashboard/user'
 
 // Protected

@@ -1,11 +1,11 @@
 'use client'
 
-import { ConfirmDialog } from '@/components/dashboard/confirm-dialog'
+import { ConfirmDialog } from '@/components/confirm-dialog'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useDeleteUser } from '@/hooks/use-user'
-import type { User } from '@/types'
+import type { User } from '@/types/user'
 import { AlertTriangle } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,19 +47,19 @@ export function UserDeleteDialog({ open, onOpenChange, currentRow }: Props) {
       desc={
         <div className="space-y-4">
           <p className="mb-2">
-            Are you sure you want to delete <span className="font-bold">{currentRow.username}</span>?
+            {t('public.deleteDesc')} <span className="font-bold">{currentRow.username}</span>?
             <br />
-            This action will permanently remove the user from the system.
+            {t('dashboard.user.deleteDesc1')}
           </p>
 
           <Label className="my-2">
-            Username:
-            <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="Enter username to confirm deletion." />
+            {t('dashboard.user.username')}:
+            <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder={t('dashboard.user.deletePlaceholder')} />
           </Label>
 
           <Alert variant="destructive">
-            <AlertTitle>Warning!</AlertTitle>
-            <AlertDescription>This operation cannot be undone. All user data will be permanently deleted.</AlertDescription>
+            <AlertTitle>{t('public.warningText')}</AlertTitle>
+            <AlertDescription>{t('dashboard.user.deleteDesc2')}</AlertDescription>
           </Alert>
         </div>
       }

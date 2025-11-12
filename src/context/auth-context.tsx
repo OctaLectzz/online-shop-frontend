@@ -1,5 +1,5 @@
 import { useProfile } from '@/hooks/use-auth'
-import type { LoginResponse } from '@/types'
+import type { LoginResponse } from '@/types/auth'
 import i18n from '@/utils/i18n'
 import Cookies from 'js-cookie'
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'

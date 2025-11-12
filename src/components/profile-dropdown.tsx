@@ -2,18 +2,39 @@ import { LogoutDialog } from '@/components/logout-dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import type { User } from '@/types/user'
+import { getInitials } from '@/utils/get-initials'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: { name: string; email: string; avatar: string | null }; onLogoutConfirm: () => void; isPending: boolean }) {
+export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: User; onLogoutConfirm: () => void; isPending: boolean }) {
   const { t } = useTranslation()
+  const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    if (!user?.avatar) {
+      setAvatarSrc(undefined)
+      return
+    }
+
+    if (typeof user.avatar === 'string') {
+      setAvatarSrc(user.avatar)
+      return
+    }
+
+    const url = URL.createObjectURL(user.avatar)
+    setAvatarSrc(url)
+    return () => URL.revokeObjectURL(url)
+  }, [user?.avatar])
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar ?? '/img/user-profile-default.jpg'} alt="@user" />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={avatarSrc} alt="@user" />
+            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -34,6 +55,7 @@ export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: { 
               {t('dashboard.layout.profileMenu')} <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </Link>
           </DropdownMenuItem>
+
           <DropdownMenuItem asChild>
             <Link to="/settings">
               {t('dashboard.layout.settingMenu')} <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>

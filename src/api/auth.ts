@@ -1,5 +1,7 @@
 import type { Login, Register } from '@/schemas/auth-schema'
-import type { ApiResponse, LoginResponse, RegisterResponse, User } from '@/types'
+import type { ApiResponse } from '@/types'
+import type { LoginResponse, RegisterResponse } from '@/types/auth'
+import type { User } from '@/types/user'
 import server from '@/utils/axios'
 
 export const login = (data: Login): Promise<{ data: LoginResponse }> => {

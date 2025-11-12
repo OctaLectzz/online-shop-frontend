@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-export const url = 'http://localhost:8000'
+export const url = import.meta.env.VITE_API_URL
 
 const server = axios.create({
   baseURL: url + '/api',

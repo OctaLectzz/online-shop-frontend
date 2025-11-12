@@ -1,15 +1,3 @@
-export interface User {
-  id: number
-  avatar: File | null
-  name: string
-  username: string
-  email: string
-  phone_number: string | null
-  status: boolean | number
-  created_at: string
-  updated_at: string
-}
-
 export interface Address {
   id: number
   user_id: number
@@ -206,6 +194,8 @@ export interface Contact {
 
 export type Settings = Record<string, string | null>
 
+import type { User } from '@/types/user'
+
 export interface Log {
   id: number
   user_id: number
@@ -216,20 +206,6 @@ export interface Log {
   reference_id: number
   read: boolean
   created_at: string
-}
-
-export interface LoginResponse {
-  token: string
-  user: User
-}
-export interface RegisterResponse {
-  id: number
-  name: string
-  username: string
-  email: string
-  phone_number: string | null
-  created_at: string
-  updated_at: string
 }
 
 export interface ApiResponse<T> {

@@ -9,7 +9,7 @@ import { PasswordInput } from '@/components/ui/password-input'
 import { Switch } from '@/components/ui/switch'
 import { useCreateUser, useUpdateUser } from '@/hooks/use-user'
 import { userCreateSchema, type UserForm, userUpdateSchema } from '@/schemas/user-schema'
-import type { User } from '@/types'
+import type { User } from '@/types/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -115,7 +115,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t('dashboard.user.name')}</FormLabel>
                       <FormControl>
                         <Input placeholder="John Doe" {...field} />
                       </FormControl>
@@ -129,7 +129,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>{t('dashboard.user.username')}</FormLabel>
                       <FormControl>
                         <Input placeholder="johndoe" {...field} />
                       </FormControl>
@@ -144,7 +144,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('dashboard.user.email')}</FormLabel>
                     <FormControl>
                       <Input placeholder="john@example.com" {...field} />
                     </FormControl>
@@ -160,7 +160,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>{t('dashboard.user.password')}</FormLabel>
                         <FormControl>
                           <PasswordInput placeholder="••••••••" {...field} value={field.value ?? ''} />
                         </FormControl>
@@ -174,7 +174,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                     name="confirmPassword"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
+                        <FormLabel>{t('dashboard.user.confirmPassword')}</FormLabel>
                         <FormControl>
                           <PasswordInput placeholder="••••••••" {...field} value={field.value ?? ''} />
                         </FormControl>
@@ -191,9 +191,9 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                   name="phone_number"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel>{t('dashboard.user.phoneNumber')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="+1234567890" {...field} value={field.value ?? ''} />
+                        <Input placeholder="+6281234567890" {...field} value={field.value ?? ''} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -206,8 +206,8 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                       <div className="space-y-0.5">
-                        <FormLabel>Status</FormLabel>
-                        <p className="text-muted-foreground text-sm">Whether the user is active or not</p>
+                        <FormLabel>{t('dashboard.user.status')}</FormLabel>
+                        <p className="text-muted-foreground text-sm">{t('dashboard.user.statusDesc')}</p>
                       </div>
                       <FormControl>
                         <Switch checked={field.value} onCheckedChange={(checked) => field.onChange(checked)} />

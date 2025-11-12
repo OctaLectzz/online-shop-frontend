@@ -5,9 +5,11 @@ import { useTheme } from '@/context/theme-context'
 import type { SidebarData } from '@/types/layout'
 import { ArrowRight, ChevronRight, Laptop, Moon, Sun } from 'lucide-react'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
 export function CommandMenu({ sidebarData }: { sidebarData: SidebarData }) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { setTheme } = useTheme()
   const { open, setOpen } = useSearch()
@@ -22,10 +24,12 @@ export function CommandMenu({ sidebarData }: { sidebarData: SidebarData }) {
 
   return (
     <CommandDialog modal open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Type a command or search..." />
+      <CommandInput placeholder={t('public.commandDesc')} />
+
       <CommandList>
         <ScrollArea type="hover" className="h-72 pr-1">
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>{t('public.noResultText')}</CommandEmpty>
+
           {sidebarData.navGroups.map((group) => (
             <CommandGroup key={group.title} heading={group.title}>
               {group.items.map((navItem, i) =>
@@ -53,15 +57,17 @@ export function CommandMenu({ sidebarData }: { sidebarData: SidebarData }) {
           <CommandSeparator />
           <CommandGroup heading="Theme">
             <CommandItem onSelect={() => runCommand(() => setTheme('light'))} className="cursor-pointer">
-              <Sun /> <span>Light</span>
+              <Sun /> <span>{t('dashboard.layout.lightTheme')}</span>
             </CommandItem>
+
             <CommandItem onSelect={() => runCommand(() => setTheme('dark'))} className="cursor-pointer">
               <Moon className="scale-90" />
-              <span>Dark</span>
+              <span>{t('dashboard.layout.darkTheme')}</span>
             </CommandItem>
+
             <CommandItem onSelect={() => runCommand(() => setTheme('system'))} className="cursor-pointer">
               <Laptop />
-              <span>System</span>
+              <span>{t('dashboard.layout.systemTheme')}</span>
             </CommandItem>
           </CommandGroup>
         </ScrollArea>

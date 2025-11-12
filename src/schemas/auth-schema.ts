@@ -12,7 +12,7 @@ export const registerSchema = z
     username: z
       .string()
       .min(1, { message: t('auth.validate.usernameRequired') })
-      .max(20, { message: t('auth.validate.nuserameMaxLength') }),
+      .max(20, { message: t('auth.validate.usernameMaxLength') }),
     email: z.string().email({ message: t('auth.validate.emailFormat') }),
     password: z.string().min(8, { message: t('auth.validate.passwordMinLength') }),
     confirmPassword: z.string().min(8, { message: t('auth.validate.passwordMinLength') }),

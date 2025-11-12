@@ -13,9 +13,11 @@ import { useAuth } from '@/context/auth-context'
 import { useLogout } from '@/hooks/use-auth'
 import { cn } from '@/lib/utils'
 import Cookies from 'js-cookie'
+import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
 
 export default function DashboardLayout() {
+  const { t } = useTranslation()
   const defaultOpen = Cookies.get('sidebar_state') !== 'false'
   const { user } = useAuth()
   const { mutate: logout, isPending } = useLogout()
@@ -40,8 +42,8 @@ export default function DashboardLayout() {
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg" />
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">Toko Online</span>
-                <span className="truncate text-xs">Online Shop</span>
+                <span className="truncate font-semibold">{t('public.brandName')}</span>
+                <span className="truncate text-xs">{sidebarData.user.name}</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenu>
@@ -63,7 +65,18 @@ export default function DashboardLayout() {
       {/* Search List */}
       <CommandMenu sidebarData={sidebarData} />
 
-      <div id="content" className={cn('ml-auto w-full max-w-full', 'peer-data-[state=collapsed]:w-[calc(100%-var(--sidebar-width-icon)-1rem)]', 'peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]', 'sm:transition-[width] sm:duration-200 sm:ease-linear', 'flex h-svh flex-col', 'group-data-[scroll-locked=1]/body:h-full', 'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh')}>
+      <div
+        id="content"
+        className={cn(
+          'ml-auto w-full max-w-full',
+          'peer-data-[state=collapsed]:w-[calc(100%-var(--sidebar-width-icon)-1rem)]',
+          'peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]',
+          'sm:transition-[width] sm:duration-200 sm:ease-linear',
+          'flex h-svh flex-col',
+          'group-data-[scroll-locked=1]/body:h-full',
+          'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh'
+        )}
+      >
         {/* Navbar */}
         <Header fixed>
           {/* Search */}

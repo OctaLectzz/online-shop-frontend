@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { getCroppedImg } from '@/utils/image-crop'
 import { X } from 'lucide-react'
@@ -9,6 +9,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import type { Area } from 'react-easy-crop'
 import Cropper from 'react-easy-crop'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 interface AvatarUploadProps {
   value: File | null
@@ -18,6 +20,7 @@ interface AvatarUploadProps {
 }
 
 export function AvatarUpload({ value, onChange, currentAvatar, className }: AvatarUploadProps) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [image, setImage] = useState<string | null>(null)
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -42,15 +45,20 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
     }
   }, [])
 
+  const onDropRejected = useCallback(() => {
+    alert(t('dashboard.user.validate.avatarMaxSize'))
+  }, [t])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    onDropRejected,
     accept: {
       'image/jpeg': ['.jpeg', '.jpg'],
       'image/png': ['.png'],
       'image/webp': ['.webp']
     },
     maxFiles: 1,
-    maxSize: 5 * 1024 * 1024 // 5MB
+    maxSize: import.meta.env.VITE_MAX_FILE_KB * 1024
   })
 
   const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
@@ -61,13 +69,21 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
     if (image && croppedAreaPixels) {
       try {
         const croppedImage = await getCroppedImg(image, croppedAreaPixels)
+
+        const file = croppedImage instanceof File ? croppedImage : new File([croppedImage], 'avatar.jpg', { type: 'image/jpeg' })
+
+        if (file.size > import.meta.env.VITE_MAX_FILE_KB * 1024) {
+          toast.error(t('dashboard.user.validate.avatarCroppedMaxSize'))
+          return
+        }
+
         onChange(croppedImage)
         setOpen(false)
       } catch (e) {
         console.error('Error cropping image', e)
       }
     }
-  }, [image, croppedAreaPixels, onChange])
+  }, [t, image, croppedAreaPixels, onChange])
 
   const handleRemove = useCallback(() => {
     onChange(null)
@@ -77,7 +93,7 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
   return (
     <div className={cn('space-y-2', className)}>
       <div className="relative">
-        <div {...getRootProps()} className={cn('flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed', 'bg-background border-border hover:border-primary', isDragActive && 'border-primary', 'transition-colors duration-200')}>
+        <div {...getRootProps()} className={cn('my-4 flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed', 'bg-background border-border hover:border-primary', isDragActive && 'border-primary', 'transition-colors duration-200')}>
           <input {...getInputProps()} />
           {value ? (
             <img src={URL.createObjectURL(value)} alt="Avatar preview" className="h-full w-full rounded-full object-cover" />
@@ -89,9 +105,9 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
                 'Drop the image here'
               ) : (
                 <>
-                  Drag & drop or
+                  {t('public.dragAndDropText')} {t('public.orText')}
                   <br />
-                  click to upload
+                  {t('public.clickToUploadText')}
                 </>
               )}
             </div>
@@ -108,7 +124,8 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Crop your avatar</DialogTitle>
+            <DialogTitle>{t('dashboard.user.avatar')}</DialogTitle>
+            <DialogDescription>{t('dashboard.user.cropDesc')}</DialogDescription>
           </DialogHeader>
 
           <div className="relative h-64 w-full">
@@ -138,10 +155,10 @@ export function AvatarUpload({ value, onChange, currentAvatar, className }: Avat
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
+              {t('public.cancelText')}
             </Button>
             <Button type="button" onClick={handleCrop}>
-              Save
+              {t('public.saveText')}
             </Button>
           </DialogFooter>
         </DialogContent>

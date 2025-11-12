@@ -14,6 +14,7 @@ export function NavGroup({ title, items }: NavGroup) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
+
       <SidebarMenu>
         {items.map((item) => {
           const key = `${item.title}-${item.url}`
@@ -59,6 +60,7 @@ const SidebarMenuCollapsible = ({ item, href }: { item: NavCollapsible; href: st
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
         </CollapsibleTrigger>
+
         <CollapsibleContent className="CollapsibleContent">
           <SidebarMenuSub>
             {item.items.map((subItem) => (

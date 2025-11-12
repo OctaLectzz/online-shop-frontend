@@ -1,5 +1,6 @@
 import type { UserForm } from '@/schemas/user-schema'
-import type { APIErrorResponse, User } from '@/types'
+import type { APIErrorResponse } from '@/types'
+import type { User } from '@/types/user'
 import i18n from '@/utils/i18n'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosError } from 'axios'

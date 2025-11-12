@@ -1,6 +1,7 @@
-import { cn } from '@/lib/utils'
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmDialogProps {
   open: boolean
@@ -18,7 +19,9 @@ interface ConfirmDialogProps {
 }
 
 export function ConfirmDialog(props: ConfirmDialogProps) {
+  const { t } = useTranslation()
   const { title, desc, children, className, confirmText, cancelBtnText, destructive, isLoading, disabled = false, handleConfirm, ...actions } = props
+
   return (
     <AlertDialog {...actions}>
       <AlertDialogContent className={cn(className && className)}>
@@ -28,11 +31,13 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
             <div>{desc}</div>
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         {children}
+
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>{cancelBtnText ?? 'Cancel'}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>{cancelBtnText ?? t('public.cancelText')}</AlertDialogCancel>
           <Button variant={destructive ? 'destructive' : 'default'} onClick={handleConfirm} disabled={disabled || isLoading}>
-            {confirmText ?? 'Continue'}
+            {confirmText ?? t('public.continueText')}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

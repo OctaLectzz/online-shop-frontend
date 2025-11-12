@@ -1,11 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/prettierrc",
   "plugins": ["prettier-plugin-tailwindcss"],
-  "printWidth": 500,
+  "printWidth": 350,
   "max-len": [
     2,
     {
-      "code": 550,
+      "code": 400,
       "tabWidth": 2,
       "ignoreUrls": true,
       "ignoreStrings": true

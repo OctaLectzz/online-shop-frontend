@@ -8,42 +8,42 @@ export const userSchema = z
     avatar: z.instanceof(File).optional().nullable(),
     name: z
       .string()
-      .min(1, { message: t('auth.validate.nameRequired') })
-      .max(50, { message: t('auth.validate.nameMaxLength') }),
+      .min(1, { message: t('dashboard.user.validate.nameRequired') })
+      .max(50, { message: t('dashboard.user.validate.nameMaxLength') }),
     username: z
       .string()
-      .min(1, { message: t('auth.validate.usernameRequired') })
-      .max(20, { message: t('auth.validate.usernameMaxLength') }),
-    email: z.string().email({ message: t('auth.validate.emailFormat') }),
+      .min(1, { message: t('dashboard.user.validate.usernameRequired') })
+      .max(20, { message: t('dashboard.user.validate.usernameMaxLength') }),
+    email: z.string().email({ message: t('dashboard.user.validate.emailFormat') }),
     password: z
       .string()
-      .min(8, { message: t('auth.validate.passwordMinLength') })
+      .min(8, { message: t('dashboard.user.validate.passwordMinLength') })
       .optional()
       .nullable(),
     confirmPassword: z.string().optional().nullable(),
     phone_number: z
       .string()
-      .max(15, { message: t('auth.validate.phoneNumberMaxLength') })
+      .max(15, { message: t('dashboard.user.validate.phoneNumberMaxLength') })
       .optional()
       .nullable(),
     status: z.boolean(),
     isEdit: z.boolean()
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: t('auth.validate.confirmPasswordNotMatch'),
+    message: t('dashboard.user.validate.confirmPasswordNotMatch'),
     path: ['confirmPassword']
   })
 
 export const userCreateSchema = userSchema
   .extend({
-    password: z.string().min(8, { message: t('auth.validate.passwordMinLength') }),
-    confirmPassword: z.string().min(8, { message: t('auth.validate.passwordMinLength') })
+    password: z.string().min(8, { message: t('dashboard.user.validate.passwordMinLength') }),
+    confirmPassword: z.string().min(8, { message: t('dashboard.user.validate.passwordMinLength') })
   })
   .superRefine((data, ctx) => {
     if (data.password !== data.confirmPassword) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: t('auth.validate.confirmPasswordNotMatch'),
+        message: t('dashboard.user.validate.confirmPasswordNotMatch'),
         path: ['confirmPassword']
       })
     }
@@ -58,7 +58,7 @@ export const userUpdateSchema = userSchema
     if ((data.password || data.confirmPassword) && data.password !== data.confirmPassword) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: t('auth.validate.confirmPasswordNotMatch'),
+        message: t('dashboard.user.validate.confirmPasswordNotMatch'),
         path: ['confirmPassword']
       })
     }

@@ -22,6 +22,7 @@ export function TopNav({ className, links, ...props }: TopNavProps) {
               <Menu />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent side="bottom" align="start">
             {links.map(({ title, href, isActive }) => (
               <DropdownMenuItem key={`${title}-${href}`} asChild>

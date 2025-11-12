@@ -1,5 +1,5 @@
 import type { UserForm } from '@/schemas/user-schema'
-import type { User } from '@/types'
+import type { User } from '@/types/user'
 import server from '@/utils/axios'
 import { objectToFormData } from '@/utils/form-data'
 
@@ -41,7 +41,7 @@ export const updateUser = async (values: UserForm & { id: number }): Promise<Use
 
   const payload = {
     ...values,
-    avatar: values.avatar instanceof File ? values.avatar : undefined,
+    avatar: values.avatar instanceof File ? values.avatar : null,
     status: values.status === false ? 0 : 1,
     ...(!values.password
       ? {

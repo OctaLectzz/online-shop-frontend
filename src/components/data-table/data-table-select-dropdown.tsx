@@ -2,8 +2,9 @@ import { FormControl } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { Loader } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
-interface SelectDropdownProps {
+interface DataTableSelectDropdownProps {
   onValueChange?: (value: string) => void
   defaultValue: string | undefined
   placeholder?: string
@@ -14,13 +15,15 @@ interface SelectDropdownProps {
   isControlled?: boolean
 }
 
-export function SelectDropdown({ defaultValue, onValueChange, isPending, items, placeholder, disabled, className = '', isControlled = false }: SelectDropdownProps) {
+export function DataTableSelectDropdown({ defaultValue, onValueChange, isPending, items, placeholder, disabled, className = '', isControlled = false }: DataTableSelectDropdownProps) {
+  const { t } = useTranslation()
   const defaultState = isControlled ? { value: defaultValue, onValueChange } : { defaultValue, onValueChange }
+
   return (
     <Select {...defaultState}>
       <FormControl>
         <SelectTrigger disabled={disabled} className={cn(className)}>
-          <SelectValue placeholder={placeholder ?? 'Select'} />
+          <SelectValue placeholder={placeholder ?? t('selectText')} />
         </SelectTrigger>
       </FormControl>
       <SelectContent>
@@ -29,7 +32,7 @@ export function SelectDropdown({ defaultValue, onValueChange, isPending, items, 
             <div className="flex items-center justify-center gap-2">
               <Loader className="h-5 w-5 animate-spin" />
               {'  '}
-              Loading...
+              {t('public.loadingText')}
             </div>
           </SelectItem>
         ) : (

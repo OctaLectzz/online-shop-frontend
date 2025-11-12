@@ -13,11 +13,13 @@ export function LogoutDialog({ trigger, onConfirm, isPending }: LogoutDialogProp
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
+
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t('auth.logoutTitle')}</AlertDialogTitle>
           <AlertDialogDescription>{t('auth.logoutSubtitle')}</AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>{t('public.cancelText')}</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} disabled={isPending}>
