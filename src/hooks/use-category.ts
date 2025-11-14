@@ -1,4 +1,4 @@
-import type { CategoryValues } from '@/schemas/category-schema'
+import type { CategoryFormValues } from '@/schemas/category-schema'
 import type { APIErrorResponse } from '@/types'
 import type { Category } from '@/types/category'
 import i18n from '@/utils/i18n'
@@ -27,7 +27,7 @@ export const useCategory = (id: number) => {
 export const useCreateCategory = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<Category, AxiosError<APIErrorResponse>, CategoryValues>({
+  return useMutation<Category, AxiosError<APIErrorResponse>, CategoryFormValues>({
     mutationFn: createCategory,
     onSuccess: () => {
       toast.success(t('dashboard.category.response.successCreateMsg'))
@@ -46,7 +46,7 @@ export const useCreateCategory = () => {
 export const useUpdateCategory = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<Category, AxiosError<APIErrorResponse>, CategoryValues & { id: number }>({
+  return useMutation<Category, AxiosError<APIErrorResponse>, CategoryFormValues & { id: number }>({
     mutationFn: updateCategory,
     onSuccess: (_, variables) => {
       toast.success(t('dashboard.category.response.successUpdateMsg'))

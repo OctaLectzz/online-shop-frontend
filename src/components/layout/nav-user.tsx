@@ -1,4 +1,4 @@
-import ImagePreview from '@/components/image-preview'
+import ImagePreview from '@/components/image/image-preview'
 import { LogoutDialog } from '@/components/logout-dialog'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'

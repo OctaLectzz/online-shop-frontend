@@ -13,6 +13,8 @@ import Login from '@/pages/auth/login'
 import Register from '@/pages/auth/register'
 import Category from '@/pages/dashboard/category'
 import Index from '@/pages/dashboard/index'
+import Product from '@/pages/dashboard/product'
+import { ProductForm } from '@/pages/dashboard/product/form'
 import User from '@/pages/dashboard/user'
 
 export const router = createBrowserRouter([
@@ -42,7 +44,15 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <Index /> },
               { path: 'user', element: <User /> },
-              { path: 'category', element: <Category /> }
+              { path: 'category', element: <Category /> },
+              {
+                path: 'product',
+                children: [
+                  { index: true, element: <Product /> },
+                  { path: 'create', element: <ProductForm /> },
+                  { path: 'edit/:slug', element: <ProductForm /> }
+                ]
+              }
             ]
           }
         ]

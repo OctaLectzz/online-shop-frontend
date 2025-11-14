@@ -7,7 +7,7 @@ import { getInitials } from '@/utils/get-initials'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import ImagePreview from './image-preview'
+import ImagePreview from './image/image-preview'
 
 export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: User; onLogoutConfirm: () => void; isPending: boolean }) {
   const { t } = useTranslation()

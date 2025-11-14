@@ -1,5 +1,5 @@
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
-import ImagePreview from '@/components/image-preview'
+import ImagePreview from '@/components/image/image-preview'
 import LongText from '@/components/long-text'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -93,12 +93,12 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const status = row.original.status
       const isActive = status === true || status === 1
-      const badgeColor = isActive ? 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200' : 'bg-red-300/40 border-red-300'
+      const badgeColor = isActive ? 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200' : 'bg-red-300/40 text-red-900 dark:text-red-200 border-red-300'
 
       return (
         <div className="flex space-x-2">
           <Badge variant="outline" className={cn('capitalize', badgeColor)}>
-            {isActive ? t('dashboard.user.activeLabel') : t('dashboard.user.inactiveLabel')}
+            {isActive ? t('public.activeText') : t('public.inactiveText')}
           </Badge>
         </div>
       )
