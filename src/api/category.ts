@@ -1,4 +1,4 @@
-import type { CategoryValues } from '@/schemas/category-schema'
+import type { CategoryFormValues } from '@/schemas/category-schema'
 import type { Category } from '@/types/category'
 import server from '@/utils/axios'
 import { objectToFormData } from '@/utils/form-data'
@@ -15,7 +15,7 @@ export const showCategory = async (id: number): Promise<Category> => {
   return data.data
 }
 
-export const createCategory = async (values: CategoryValues): Promise<Category> => {
+export const createCategory = async (values: CategoryFormValues): Promise<Category> => {
   const formData = objectToFormData(values)
 
   const { data } = await server.post<{ data: Category }>('/category', formData, {
@@ -26,7 +26,7 @@ export const createCategory = async (values: CategoryValues): Promise<Category> 
   return data.data
 }
 
-export const updateCategory = async (values: CategoryValues & { id: number }): Promise<Category> => {
+export const updateCategory = async (values: CategoryFormValues & { id: number }): Promise<Category> => {
   if (!values.id) {
     throw new Error('ID is required for updates')
   }

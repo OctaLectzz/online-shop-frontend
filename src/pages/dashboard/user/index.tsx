@@ -80,21 +80,22 @@ function UserContent() {
         <div className="space-y-4">
           {/* Toolbar */}
           <div className="flex items-center justify-between">
-            {/* Status */}
             <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
               <Input placeholder={t('dashboard.user.filterText')} value={(table.getColumn('username')?.getFilterValue() as string) ?? ''} onChange={(event) => table.getColumn('username')?.setFilterValue(event.target.value)} className="h-8 w-[150px] lg:w-[250px]" />
+
               <div className="flex gap-x-2">
                 {table.getColumn('status') && (
                   <DataTableDataFilter
                     column={table.getColumn('status')}
                     title="Status"
                     options={[
-                      { label: t('dashboard.user.activeLabel'), value: 'active' },
-                      { label: t('dashboard.user.inactiveLabel'), value: 'inactive' }
+                      { label: t('public.activeText'), value: 'active' },
+                      { label: t('public.inactiveText'), value: 'inactive' }
                     ]}
                   />
                 )}
               </div>
+
               {isFiltered && (
                 <Button variant="ghost" onClick={() => table.resetColumnFilters()} className="h-8 px-2 lg:px-3">
                   {t('public.resetText')}

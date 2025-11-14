@@ -1,4 +1,4 @@
-import type { UserValues } from '@/schemas/user-schema'
+import type { UserFormValues } from '@/schemas/user-schema'
 import type { User } from '@/types/user'
 import server from '@/utils/axios'
 import { objectToFormData } from '@/utils/form-data'
@@ -15,7 +15,7 @@ export const showUser = async (id: number): Promise<User> => {
   return data.data
 }
 
-export const createUser = async (values: UserValues): Promise<User> => {
+export const createUser = async (values: UserFormValues): Promise<User> => {
   const formData = objectToFormData({
     ...values,
     avatar: values.avatar instanceof File ? values.avatar : null,
@@ -34,7 +34,7 @@ export const createUser = async (values: UserValues): Promise<User> => {
   return data.data
 }
 
-export const updateUser = async (values: UserValues & { id: number }): Promise<User> => {
+export const updateUser = async (values: UserFormValues & { id: number }): Promise<User> => {
   if (!values.id) {
     throw new Error('ID is required for updates')
   }

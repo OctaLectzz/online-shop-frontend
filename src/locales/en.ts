@@ -15,8 +15,11 @@ const en = {
     warningText: 'WARNING!!!',
     resetText: 'Reset',
     saveText: 'Save changes',
+    backText: 'Back',
     orText: 'or',
     noResultText: 'No results found.',
+    activeText: 'Active',
+    inactiveText: 'Inactive',
     saveDesc: "Click save when you're done.",
     deleteDesc: 'Are you sure you want to delete',
     commandDesc: 'Type a command or search...',
@@ -27,6 +30,7 @@ const en = {
     hide: 'Hide',
     yes: 'Yes',
     no: 'No',
+    validateMin0: 'Value cannot be less than 0',
     pagination: {
       rowsPerPage: 'Rows per page',
       firstPage: 'Go to first page',
@@ -38,10 +42,16 @@ const en = {
       imageText: 'Image',
       cropDesc: 'Crop your image',
       dragAndDropText: 'Drag & drop',
+      dragAndDropMultiple: 'Drag & drop multiple images here',
+      supportedFormats: 'Supported formats',
+      maxSizeText: 'Maximum {{size}} KB per file',
       dropText: 'Drop the image here',
       clickToUploadText: 'Click to upload',
       validateImageMaxSize: 'Avatar must be smaller than 5120 KB.',
-      validateImageCroppedMaxSize: 'Cropped image is larger than 5120 KB. Try cropping smaller.'
+      validateImageCroppedMaxSize: 'Cropped image is larger than 5120 KB. Try cropping smaller.',
+      cropErrorText: 'An error occurred while cropping the image.',
+      removeImageText: 'Remove image',
+      saveAndNextText: 'Save & next'
     }
   },
   auth: {
@@ -135,8 +145,6 @@ const en = {
       confirmPassword: 'Confirm Password',
       phoneNumber: 'Phone Number',
       status: 'Status',
-      activeLabel: 'Active',
-      inactiveLabel: 'Inactive',
       statusDesc: 'Whether the user is active or not',
       validate: {
         nameRequired: 'Name must be filled in.',
@@ -184,6 +192,97 @@ const en = {
         failedUpdateMsg: 'An error occurred while saving the category',
         successDeleteMsg: 'Category deleted successfully',
         failedDeleteMsg: 'An error occurred while deleting the category'
+      }
+    },
+    product: {
+      title: 'Product',
+      titleList: 'Product List',
+      desc: 'Manage your products and their images here.',
+      filterText: 'Filter products...',
+      createDesc: 'Create new product here.',
+      editDesc: 'Update the product here.',
+      deleteDesc1: 'This operation cannot be undone. All product data will be permanently deleted.',
+      deleteDesc2: 'This action will permanently remove the product from the system.',
+      deletePlaceholder: 'Enter product name to confirm deletion.',
+
+      media: 'Product Media',
+      images: 'Images',
+      existingImages: 'Existing images',
+      newImages: 'New images',
+
+      basicInfo: 'Basic Information',
+      name: 'Name',
+      sku: 'SKU',
+      category: 'Category',
+      categoryPlaceholder: 'Select a category',
+      description: 'Description',
+      descriptionPlaceholder: 'Write a product description...',
+
+      salesInformation: 'Sales Information',
+      variants: 'Variants',
+      variantName: 'Variant Name',
+      price: 'Price',
+      stock: 'Stock',
+      variantImage: 'Variant Image',
+      addVariant: 'Add Variant',
+      addVariantTitle: 'Add New Variant',
+      addVariantDesc: 'Fill the fields below to add a new variant.',
+      variantModeSingle: 'Enable Variations',
+      variantModeMultiple: 'Deactivate Variations',
+      variantEmptyHelper: 'No variants added yet. Please add at least 1 variant.',
+      unnamedVariant: 'Unnamed Variant',
+
+      attributes: 'Attributes',
+      attributeName: 'Attribute Name',
+      attributeValues: 'Attribute Values',
+      addAttribute: 'Add Attribute',
+
+      informations: 'Additional Informations',
+      infoName: 'Information Name',
+      infoDescription: 'Information Description',
+      addInformation: 'Add Information',
+
+      dimensions: 'Product Dimensions',
+      weight: 'Weight',
+      height: 'Height',
+      width: 'Width',
+      length: 'Length',
+
+      tagsTitle: 'Product Tags',
+      tags: 'Tags',
+      tagPlaceholder: 'Separate with commas, e.g. electronics, cheap',
+
+      settings: 'Settings',
+      status: 'Status',
+      statusDesc: 'Enable or disable this product in the store',
+      createdAt: 'Created At',
+      validate: {
+        nameRequired: 'Product name is required',
+        nameMax: 'Product name cannot exceed 255 characters',
+        categoryRequired: 'Category is required',
+        skuRequired: 'SKU is required',
+        skuMax: 'SKU cannot exceed 255 characters',
+        descriptionRequired: 'Description is required',
+
+        variantNameRequired: 'Variant name is required',
+        variantNameMax: 'Variant name cannot exceed 255 characters',
+        variantMinOne: 'You must add at least 1 variant.',
+
+        attributeNameRequired: 'Attribute name is required',
+        attributeNameMax: 'Attribute name cannot exceed 255 characters',
+        attributeListsMin: 'Attribute must have at least 1 value',
+
+        infoNameRequired: 'Information name is required',
+        infoNameMax: 'Information name cannot exceed 255 characters',
+        infoDescriptionRequired: 'Information description is required'
+      },
+      response: {
+        successCreateMsg: 'Product created successfully',
+        failedCreateMsg: 'An error occurred while saving the product',
+        successUpdateMsg: 'Product updated successfully',
+        failedUpdateMsg: 'An error occurred while saving the product',
+        successDeleteMsg: 'Product deleted successfully',
+        failedDeleteMsg: 'An error occurred while deleting the product'
       }
     }
   }

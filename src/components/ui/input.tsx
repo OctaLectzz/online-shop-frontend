@@ -5,9 +5,20 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, value = '', ...props }, ref) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, value, onFocus, ...props }, ref) => {
+  const isNumber = type === 'number'
+
+  const handleFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    if (isNumber && (e.currentTarget.value === '0' || e.currentTarget.value === '0.0')) {
+      e.currentTarget.select()
+    }
+
+    onFocus?.(e)
+  }
+
   return (
     <input
+      ref={ref}
       type={type}
       data-slot="input"
       className={cn(
@@ -16,8 +27,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         className
       )}
-      ref={ref}
-      value={value}
+      value={value ?? ''}
+      onFocus={handleFocus}
       {...props}
     />
   )

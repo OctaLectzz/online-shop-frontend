@@ -1,5 +1,5 @@
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
-import ImagePreview from '@/components/image-preview'
+import ImagePreview from '@/components/image/image-preview'
 import LongText from '@/components/long-text'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'

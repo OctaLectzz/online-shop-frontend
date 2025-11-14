@@ -13,7 +13,7 @@ interface DataTableDataFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
   options: {
-    label: string
+    label: React.ReactNode
     value: string
     icon?: React.ComponentType<{ className?: string }>
   }[]

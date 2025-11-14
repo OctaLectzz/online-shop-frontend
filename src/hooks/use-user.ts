@@ -1,4 +1,4 @@
-import type { UserValues } from '@/schemas/user-schema'
+import type { UserFormValues } from '@/schemas/user-schema'
 import type { APIErrorResponse } from '@/types'
 import type { User } from '@/types/user'
 import i18n from '@/utils/i18n'
@@ -27,7 +27,7 @@ export const useUser = (id: number) => {
 export const useCreateUser = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<User, AxiosError<APIErrorResponse>, UserValues>({
+  return useMutation<User, AxiosError<APIErrorResponse>, UserFormValues>({
     mutationFn: createUser,
     onSuccess: () => {
       toast.success(t('dashboard.user.response.successCreateMsg'))
@@ -46,7 +46,7 @@ export const useCreateUser = () => {
 export const useUpdateUser = () => {
   const queryClient = useQueryClient()
 
-  return useMutation<User, AxiosError<APIErrorResponse>, UserValues & { id: number }>({
+  return useMutation<User, AxiosError<APIErrorResponse>, UserFormValues & { id: number }>({
     mutationFn: updateUser,
     onSuccess: (_, variables) => {
       toast.success(t('dashboard.user.response.successUpdateMsg'))

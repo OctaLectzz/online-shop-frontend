@@ -17,6 +17,6 @@ export const categoryCreateSchema = categorySchema
 
 export const categoryUpdateSchema = categorySchema
 
-export type CategoryValues = z.infer<typeof categorySchema>
+export type CategoryFormValues = z.infer<typeof categorySchema>
 export type CategoryCreateFormValues = z.infer<typeof categoryCreateSchema>
 export type CategoryUpdateFormValues = z.infer<typeof categoryUpdateSchema>

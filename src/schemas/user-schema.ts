@@ -64,6 +64,6 @@ export const userUpdateSchema = userSchema
     }
   })
 
-export type UserValues = z.infer<typeof userSchema>
+export type UserFormValues = z.infer<typeof userSchema>
 export type UserCreateFormValues = z.infer<typeof userCreateSchema>
 export type UserUpdateFormValues = z.infer<typeof userUpdateSchema>

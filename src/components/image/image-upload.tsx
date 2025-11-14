@@ -17,9 +17,16 @@ interface ImageUploadProps {
   onChange: (file: File | null) => void
   currentImage?: string
   className?: string
+
+  /**
+   * CHOOSE SHAPE:
+   * - "square" → 1:1 crop rectangle
+   * - "round" → 1:1 circle crop
+   */
+  shape?: 'square' | 'round'
 }
 
-export function ImageCircleUpload({ value, onChange, currentImage, className }: ImageUploadProps) {
+export function ImageUpload({ value, onChange, currentImage, className, shape = 'square' }: ImageUploadProps) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [image, setImage] = useState<string | null>(null)
@@ -28,9 +35,7 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
 
   useEffect(() => {
-    if (!value) {
-      setImage(null)
-    }
+    if (!value) setImage(null)
   }, [value])
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -46,7 +51,7 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
   }, [])
 
   const onDropRejected = useCallback(() => {
-    alert(t('public.image.validateImageMaxSize'))
+    toast.error(t('public.image.validateImageMaxSize'))
   }, [t])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -61,8 +66,8 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
     maxSize: import.meta.env.VITE_MAX_FILE_KB * 1024
   })
 
-  const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
-    setCroppedAreaPixels(croppedAreaPixels)
+  const onCropComplete = useCallback((_: Area, cropped: Area) => {
+    setCroppedAreaPixels(cropped)
   }, [])
 
   const handleCrop = useCallback(async () => {
@@ -77,10 +82,11 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
           return
         }
 
-        onChange(croppedImage)
+        onChange(file)
         setOpen(false)
       } catch (e) {
-        console.error('Error cropping image', e)
+        console.error(e)
+        toast.error(t('public.image.cropErrorText'))
       }
     }
   }, [t, image, croppedAreaPixels, onChange])
@@ -93,14 +99,15 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
   return (
     <div className={cn('space-y-2', className)}>
       <div className="relative">
-        <div {...getRootProps()} className={cn('my-4 flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed', 'bg-background border-border hover:border-primary', isDragActive && 'border-primary', 'transition-colors duration-200')}>
+        <div {...getRootProps()} className={cn('my-2 flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed', shape === 'round' ? 'rounded-full' : 'rounded-md', 'bg-background border-border hover:border-primary', isDragActive && 'border-primary', 'transition-colors duration-200')}>
           <input {...getInputProps()} />
+
           {value ? (
-            <img src={URL.createObjectURL(value)} alt="Image preview" className="h-full w-full rounded-full object-cover" />
+            <img src={URL.createObjectURL(value)} alt="preview" className={cn('h-full w-full object-cover', shape === 'round' ? 'rounded-full' : 'rounded-md')} />
           ) : currentImage ? (
-            <img src={currentImage} alt="Current image" className="h-full w-full rounded-full object-cover" />
+            <img src={currentImage} alt="current" className={cn('h-full w-full object-cover', shape === 'round' ? 'rounded-full' : 'rounded-md')} />
           ) : (
-            <div className={cn('text-center text-sm', 'text-muted-foreground')}>
+            <div className="text-muted-foreground px-1 text-center text-xs">
               {isDragActive ? (
                 t('public.image.dropText')
               ) : (
@@ -115,12 +122,13 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
         </div>
 
         {(value || currentImage) && (
-          <button type="button" onClick={handleRemove} className={cn('absolute -top-2 -right-2 rounded-full p-1 shadow-sm', 'bg-destructive text-destructive-foreground', 'hover:bg-destructive/90', 'transition-colors duration-200')} aria-label="Remove image">
+          <button type="button" onClick={handleRemove} className={cn('absolute -top-2 -right-2 rounded-full p-1 shadow-sm', 'bg-destructive text-destructive-foreground', 'hover:bg-destructive/90', 'transition-colors duration-200')} aria-label={t('public.image.removeImageText')}>
             <X className="h-4 w-4" />
           </button>
         )}
       </div>
 
+      {/* === CROPPER DIALOG === */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -128,17 +136,17 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
             <DialogDescription>{t('public.image.cropDesc')}</DialogDescription>
           </DialogHeader>
 
-          <div className="relative h-64 w-full">
+          <div className="bg-background relative h-64 w-full">
             {image && (
               <Cropper
                 image={image}
                 crop={crop}
                 zoom={zoom}
                 aspect={1}
+                cropShape={shape === 'round' ? 'round' : 'rect'}
                 onCropChange={setCrop}
                 onCropComplete={onCropComplete}
                 onZoomChange={setZoom}
-                cropShape="round"
                 showGrid={false}
                 classes={{
                   containerClassName: 'bg-background',
@@ -149,17 +157,15 @@ export function ImageCircleUpload({ value, onChange, currentImage, className }: 
           </div>
 
           <div className="space-y-2 p-4">
-            <label className="text-foreground block text-sm font-medium">Zoom: {zoom.toFixed(1)}</label>
-            <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className={cn('dark:accent-primary accent-primary h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700')} />
+            <label className="block text-sm font-medium">Zoom: {zoom.toFixed(1)}</label>
+            <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="accent-primary h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700" />
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onClick={() => setOpen(false)}>
               {t('public.cancelText')}
             </Button>
-            <Button type="button" onClick={handleCrop}>
-              {t('public.saveText')}
-            </Button>
+            <Button onClick={handleCrop}>{t('public.saveText')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
