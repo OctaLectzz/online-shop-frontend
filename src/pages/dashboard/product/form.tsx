@@ -59,6 +59,7 @@ export function ProductForm() {
   const {
     fields: variantFields,
     append: addVariant,
+    update: updateVariant,
     remove: removeVariant
   } = useFieldArray({
     control: form.control,
@@ -68,6 +69,7 @@ export function ProductForm() {
   const {
     fields: attributeFields,
     append: addAttribute,
+    update: updateAttribute,
     remove: removeAttribute
   } = useFieldArray({
     control: form.control,
@@ -101,25 +103,22 @@ export function ProductForm() {
         use_variant: product.use_variant,
         images: undefined,
         keep_images: product.images ?? [],
-        variants: product.variants.map((v) => ({
-          id: v.id,
-          name: v.name,
-          price: v.price,
-          stock: v.stock,
-          image: null,
-          _delete: false
+        variants: product.variants.map((variant) => ({
+          id: variant.id ?? undefined,
+          name: variant.name,
+          price: variant.price,
+          stock: variant.stock,
+          image: null
         })),
-        attributes: product.attributes.map((a) => ({
-          id: a.id,
-          name: a.name,
-          lists: a.lists,
-          _delete: false
+        attributes: product.attributes.map((attribute) => ({
+          id: attribute.id ?? undefined,
+          name: attribute.name,
+          lists: attribute.lists
         })),
-        informations: product.informations.map((i) => ({
-          id: i.id,
-          name: i.name,
-          description: i.description,
-          _delete: false
+        informations: product.informations.map((information) => ({
+          id: information.id ?? undefined,
+          name: information.name,
+          description: information.description
         })),
         tags: product.tags
       })
@@ -127,18 +126,24 @@ export function ProductForm() {
   }, [product, isEdit, form])
 
   const onSubmit = (values: ProductFormValues) => {
+    console.log('SUBMIT OK', values)
+
     if (isEdit && product) {
       updateProduct(
         { ...values, slug: product.slug },
         {
-          onSuccess: () => navigate('/product')
+          onSuccess: () => navigate('/dashboard/product')
         }
       )
     } else {
       createProduct(values, {
-        onSuccess: () => navigate('/product')
+        onSuccess: () => navigate('/dashboard/product')
       })
     }
+  }
+
+  const onInvalid = (errors: typeof form.formState.errors) => {
+    console.log('SUBMIT INVALID', errors)
   }
 
   if (isEdit && isLoading) {
@@ -167,7 +172,7 @@ export function ProductForm() {
 
       {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+        <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="grid gap-6 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-6">
             <ProductMediaCard form={form} product={product} isEdit={isEdit} />
 
@@ -177,9 +182,9 @@ export function ProductForm() {
           </div>
 
           <div className="space-y-6">
-            <ProductSalesInfoCard form={form} fields={variantFields} addVariant={addVariant} removeVariant={removeVariant} />
+            <ProductSalesInfoCard form={form} fields={variantFields} addVariant={addVariant} updateVariant={updateVariant} removeVariant={removeVariant} />
 
-            <ProductAttributesCard form={form} fields={attributeFields} addAttribute={addAttribute} removeAttribute={removeAttribute} />
+            <ProductAttributesCard form={form} fields={attributeFields} addAttribute={addAttribute} updateAttribute={updateAttribute} removeAttribute={removeAttribute} />
 
             <ProductInformationsCard form={form} fields={infoFields} addInfo={addInfo} removeInfo={removeInfo} />
 

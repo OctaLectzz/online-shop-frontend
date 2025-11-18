@@ -156,7 +156,8 @@ export function MultiImageUpload({ value, onChange, existingImages, onExistingCh
           <div className="flex flex-wrap gap-2">
             {localExistingImages.map((img, i) => (
               <div key={i} className="relative">
-                <ImagePreview src={img} alt={`existing-${i}`} className="h-24 w-24 rounded border object-cover" />
+                <ImagePreview src={img} alt={`existing-${i}`} className="h-24 w-24" />
+
                 <button type="button" className="bg-destructive text-destructive-foreground hover:bg-destructive/90 absolute -top-2 -right-2 rounded-full p-0.5 text-white shadow" onClick={() => handleRemoveExisting(i)} aria-label={t('public.image.removeImageText')}>
                   <X className="h-4 w-4" />
                 </button>
@@ -175,7 +176,8 @@ export function MultiImageUpload({ value, onChange, existingImages, onExistingCh
               const url = URL.createObjectURL(file)
               return (
                 <div key={index} className="relative">
-                  <ImagePreview src={url} alt={`new-${index}`} className="h-24 w-24 rounded border object-cover" />
+                  <ImagePreview src={url} alt={`new-${index}`} className="h-24 w-24" />
+
                   <button type="button" className="bg-destructive text-destructive-foreground hover:bg-destructive/90 absolute -top-2 -right-2 rounded-full p-0.5 shadow" onClick={() => handleRemoveNewFile(index)} aria-label={t('public.image.removeImageText')}>
                     <X className="h-4 w-4" />
                   </button>

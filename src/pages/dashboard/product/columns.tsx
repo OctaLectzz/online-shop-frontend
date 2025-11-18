@@ -67,7 +67,7 @@ export const columns: ColumnDef<Product>[] = [
             <CarouselContent>
               {imgs.map((src, i) => (
                 <CarouselItem key={`${row.original.id}-img-${i}`} className="flex justify-center p-0.5">
-                  <ImagePreview src={src} alt={`${name}-${i + 1}`} className="h-12 w-12 cursor-zoom-in rounded-md object-cover" />
+                  <ImagePreview src={src} alt={`${name}-${i + 1}`} className="h-12 w-12" />
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -165,7 +165,7 @@ export const columns: ColumnDef<Product>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title={t('dashboard.user.status')} />,
     cell: ({ row }) => {
       const status = row.original.status
-      const isActive = status === true || status === 1
+      const isActive = status === true
       const badgeColor = isActive ? 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200' : 'bg-red-300/40 text-red-900 dark:text-red-200 border-red-300'
 
       return (
@@ -178,7 +178,7 @@ export const columns: ColumnDef<Product>[] = [
     },
     filterFn: (row, id, value) => {
       const status = row.getValue(id)
-      const isActive = status === true || status === 1
+      const isActive = status === true
       return value.includes(isActive ? 'active' : 'inactive')
     },
     enableHiding: false

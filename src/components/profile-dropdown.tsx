@@ -43,13 +43,7 @@ export function ProfileDropdown({ user, onLogoutConfirm, isPending }: { user: Us
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="flex font-normal">
           <div className="flex items-center gap-2 text-left text-sm">
-            {avatarSrc ? (
-              <ImagePreview src={avatarSrc} alt={user.name} className="h-9 w-9 cursor-zoom-in rounded-lg border object-cover" />
-            ) : (
-              <Avatar className="h-9 w-9 rounded-lg">
-                <AvatarFallback className="rounded-lg">{getInitials(user.name)}</AvatarFallback>
-              </Avatar>
-            )}
+            <ImagePreview src={avatarSrc} alt={user.name} initials={user.name} className="h-9 w-9" />
 
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-semibold">{user.name}</span>

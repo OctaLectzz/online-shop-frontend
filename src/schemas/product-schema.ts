@@ -5,7 +5,7 @@ const t = i18n.t.bind(i18n)
 
 // Variants
 export const productVariantSchema = z.object({
-  id: z.number().optional(),
+  id: z.number().nullable().optional(),
   name: z
     .string()
     .min(1, { message: t('dashboard.product.validate.variantNameRequired') })
@@ -18,7 +18,7 @@ export const productVariantSchema = z.object({
 
 // Attributes
 export const productAttributeSchema = z.object({
-  id: z.number().optional(),
+  id: z.number().nullable().optional(),
   name: z
     .string()
     .min(1, { message: t('dashboard.product.validate.attributeNameRequired') })
@@ -28,7 +28,7 @@ export const productAttributeSchema = z.object({
 
 // Informations
 export const productInformationSchema = z.object({
-  id: z.number().optional(),
+  id: z.number().nullable().optional(),
   name: z
     .string()
     .min(1, { message: t('dashboard.product.validate.infoNameRequired') })

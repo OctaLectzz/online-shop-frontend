@@ -1,13 +1,11 @@
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 import ImagePreview from '@/components/image/image-preview'
 import LongText from '@/components/long-text'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/context/user-context'
 import { cn } from '@/lib/utils'
 import type { User } from '@/types/user'
-import { getInitials } from '@/utils/get-initials'
 import type { ColumnDef } from '@tanstack/react-table'
 import { t } from 'i18next'
 import { Edit, Trash } from 'lucide-react'
@@ -51,13 +49,7 @@ export const columns: ColumnDef<User>[] = [
 
       return (
         <div className="flex justify-center">
-          {imgUrl ? (
-            <ImagePreview src={imgUrl} alt={row.original.name} className="h-10 w-10 cursor-zoom-in rounded-lg border object-cover" />
-          ) : (
-            <Avatar className="h-10 w-10 rounded-lg">
-              <AvatarFallback className="rounded-lg">{getInitials(row.original.name)}</AvatarFallback>
-            </Avatar>
-          )}
+          <ImagePreview src={imgUrl} alt={row.original.name} initials={row.original.name} shape="round" className="h-10 w-10" />
         </div>
       )
     },
