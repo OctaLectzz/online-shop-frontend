@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
+import { RestrictedInput } from '@/components/ui/restricted-input'
 import { useRegister } from '@/hooks/use-auth'
 import { type Register, registerSchema } from '@/schemas/auth-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -65,7 +66,7 @@ export default function RegisterPage() {
                   <FormItem>
                     <FormLabel>{t('auth.username')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="johndoe" {...field} />
+                      <RestrictedInput placeholder="johndoe" {...field} lowercase noSpaces />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -81,7 +82,7 @@ export default function RegisterPage() {
                 <FormItem>
                   <FormLabel>{t('auth.email')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <RestrictedInput placeholder="name@example.com" {...field} lowercase noSpaces />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

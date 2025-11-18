@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
+import { RestrictedInput } from '@/components/ui/restricted-input'
 import { useLogin } from '@/hooks/use-auth'
 import { type Login, loginSchema } from '@/schemas/auth-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -49,7 +49,7 @@ export default function LoginPage() {
                 <FormItem>
                   <FormLabel>{t('auth.email')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <RestrictedInput placeholder="name@example.com" {...field} lowercase noSpaces />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

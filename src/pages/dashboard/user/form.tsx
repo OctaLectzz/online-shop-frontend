@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
+import { RestrictedInput } from '@/components/ui/restricted-input'
 import { Switch } from '@/components/ui/switch'
 import { useCreateUser, useUpdateUser } from '@/hooks/use-user'
 import { userCreateSchema, userUpdateSchema, type UserFormValues } from '@/schemas/user-schema'
@@ -132,7 +133,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                     <FormItem>
                       <FormLabel>{t('dashboard.user.username')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="johndoe" {...field} />
+                        <RestrictedInput placeholder="johndoe" {...field} lowercase noSpaces />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -147,7 +148,7 @@ export function UserForm({ open, onOpenChange, currentRow }: UserFormProps) {
                   <FormItem>
                     <FormLabel>{t('dashboard.user.email')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="john@example.com" {...field} />
+                      <RestrictedInput placeholder="john@example.com" {...field} lowercase noSpaces />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

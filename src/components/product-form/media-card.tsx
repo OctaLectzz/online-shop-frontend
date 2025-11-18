@@ -28,7 +28,10 @@ export function ProductMediaCard({ form, product, isEdit }: MediaProps) {
           name="images"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('dashboard.product.images')}</FormLabel>
+              <FormLabel className="gap-1">
+                {t('dashboard.product.images')}
+                <span className="text-red-500">*</span>
+              </FormLabel>
               <FormControl>
                 <MultiImageUpload
                   value={field.value ?? []}

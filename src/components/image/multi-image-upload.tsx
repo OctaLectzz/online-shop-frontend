@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { getCroppedImg } from '@/utils/image-crop'
-import { Trash2 } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import type { Area } from 'react-easy-crop'
@@ -157,8 +157,8 @@ export function MultiImageUpload({ value, onChange, existingImages, onExistingCh
             {localExistingImages.map((img, i) => (
               <div key={i} className="relative">
                 <ImagePreview src={img} alt={`existing-${i}`} className="h-24 w-24 rounded border object-cover" />
-                <button type="button" className="bg-destructive text-destructive-foreground hover:bg-destructive/90 absolute -top-2 -right-2 rounded-full p-0.5 shadow" onClick={() => handleRemoveExisting(i)} aria-label={t('public.image.removeImageText')}>
-                  <Trash2 className="h-4 w-4" />
+                <button type="button" className="bg-destructive text-destructive-foreground hover:bg-destructive/90 absolute -top-2 -right-2 rounded-full p-0.5 text-white shadow" onClick={() => handleRemoveExisting(i)} aria-label={t('public.image.removeImageText')}>
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             ))}
@@ -177,7 +177,7 @@ export function MultiImageUpload({ value, onChange, existingImages, onExistingCh
                 <div key={index} className="relative">
                   <ImagePreview src={url} alt={`new-${index}`} className="h-24 w-24 rounded border object-cover" />
                   <button type="button" className="bg-destructive text-destructive-foreground hover:bg-destructive/90 absolute -top-2 -right-2 rounded-full p-0.5 shadow" onClick={() => handleRemoveNewFile(index)} aria-label={t('public.image.removeImageText')}>
-                    <Trash2 className="h-4 w-4" />
+                    <X className="h-4 w-4" />
                   </button>
                 </div>
               )

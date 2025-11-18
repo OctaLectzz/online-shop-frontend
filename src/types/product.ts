@@ -9,14 +9,14 @@ export interface Product {
   category: Category
   description: string
   dimensions: Dimensions
-  status: boolean | number
+  status: boolean
   use_variant: boolean
   created_by: string | null
   images: string[]
   variants: ProductVariant[]
   attributes: ProductAttribute[]
   informations: ProductInformation[]
-  tags?: string[] | undefined
+  tags: string[] | undefined
   created_at: string
   updated_at: string
 }
@@ -33,7 +33,7 @@ export interface ProductVariant {
   name: string
   price: number
   stock: number
-  sold: number
+  sold: number | null
   image: string | null
 }
 

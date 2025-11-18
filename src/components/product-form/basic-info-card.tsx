@@ -5,6 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { RestrictedInput } from '@/components/ui/restricted-input'
 import { Textarea } from '@/components/ui/textarea'
 import { useCategories } from '@/hooks/use-category'
 import type { ProductFormValues } from '@/schemas/product-schema'
@@ -21,6 +22,14 @@ export function ProductBasicInfoCard({ form }: Props) {
   const { t } = useTranslation()
   const { data: categories, isLoading } = useCategories()
   const [open, setOpen] = useState(false)
+
+  const createSlug = (value: string) =>
+    value
+      .toLowerCase()
+      .trim()
+      .replace(/['"]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
 
   return (
     <Card>
@@ -40,7 +49,36 @@ export function ProductBasicInfoCard({ form }: Props) {
                 <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input {...field} placeholder="iPhone 12 Pro Max" />
+                <Input
+                  {...field}
+                  placeholder="iPhone 12 Pro Max"
+                  onChange={(e) => {
+                    const value = e.target.value
+                    field.onChange(value)
+                    const newSlug = createSlug(value)
+                    form.setValue('slug', newSlug, {
+                      shouldValidate: true
+                    })
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Slug */}
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="gap-1">
+                {t('dashboard.product.slug')}
+                <span className="text-red-500">*</span>
+              </FormLabel>
+              <FormControl>
+                <RestrictedInput {...field} placeholder="iphone-12-pro-max" lowercase noSpaces />
               </FormControl>
               <FormMessage />
             </FormItem>
