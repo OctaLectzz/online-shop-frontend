@@ -212,7 +212,10 @@ const en = {
 
       basicInfo: 'Basic Information',
       name: 'Name',
+<<<<<<< HEAD
       slug: 'Slug',
+=======
+>>>>>>> 7c5ce0045c02f1fc8fdd500490f8679a4562a4b4
       sku: 'SKU',
       category: 'Category',
       categoryPlaceholder: 'Select a category',
@@ -237,11 +240,14 @@ const en = {
       attributeName: 'Attribute Name',
       attributeValues: 'Attribute Values',
       addAttribute: 'Add Attribute',
+<<<<<<< HEAD
       attributeNamePlaceholder: 'e.g. Color',
       attributeValuesPlaceholder: 'Type a value and press Enter',
       attributeValuesHint: 'Type a value and press Enter to add it to the list.',
       addAttributeTitle: 'Add Attribute',
       addAttributeDesc: 'Define the attribute name and its possible values.',
+=======
+>>>>>>> 7c5ce0045c02f1fc8fdd500490f8679a4562a4b4
 
       informations: 'Additional Informations',
       infoName: 'Information Name',
@@ -263,8 +269,11 @@ const en = {
       statusDesc: 'Enable or disable this product in the store',
       createdAt: 'Created At',
       validate: {
+<<<<<<< HEAD
         nameRequired: 'Slug is required',
         nameMax: 'Slug cannot exceed 255 characters',
+=======
+>>>>>>> 7c5ce0045c02f1fc8fdd500490f8679a4562a4b4
         nameRequired: 'Product name is required',
         nameMax: 'Product name cannot exceed 255 characters',
         categoryRequired: 'Category is required',
