@@ -15,14 +15,17 @@ export function objectToFormData(obj: Record<string, FormValue>, form: FormData 
 
     // === Array ===
     if (Array.isArray(value)) {
-      value.forEach((v, i) => {
-        const arrayKey = `${formKey}[${i}]`
-        if (v instanceof File) {
-          form.append(`${formKey}[]`, v)
-        } else if (typeof v === 'object' && v !== null) {
-          objectToFormData(v as Record<string, FormValue>, form, arrayKey)
-        } else if (v !== undefined && v !== null) {
-          form.append(`${formKey}[]`, String(v))
+      value.forEach((item, index) => {
+        if (item === undefined || item === null) return
+
+        const itemKey = `${formKey}[${index}]`
+
+        if (item instanceof File) {
+          form.append(itemKey, item)
+        } else if (typeof item === 'object') {
+          objectToFormData(item as Record<string, FormValue>, form, itemKey)
+        } else {
+          form.append(itemKey, String(item))
         }
       })
       return
@@ -34,7 +37,7 @@ export function objectToFormData(obj: Record<string, FormValue>, form: FormData 
       return
     }
 
-    // === Primitive values ===
+    // === Primitive ===
     if (typeof value === 'boolean') {
       form.append(formKey, value ? 'true' : 'false')
     } else {

@@ -3,12 +3,15 @@ import type { Category } from './category'
 export interface Product {
   id: number
   category_id: number
-  slug: string
   sku: string
+  slug: string
   name: string
   category: Category
   description: string
-  dimensions: Dimensions
+  weight: number
+  height: number | null
+  width: number | null
+  length: number | null
   status: boolean
   use_variant: boolean
   created_by: string | null
@@ -21,13 +24,6 @@ export interface Product {
   updated_at: string
 }
 
-export interface Dimensions {
-  weight: number
-  height: number | null
-  width: number | null
-  length: number | null
-}
-
 export interface ProductVariant {
   id: number
   name: string
@@ -35,16 +31,19 @@ export interface ProductVariant {
   stock: number
   sold: number | null
   image: string | null
+  _delete?: boolean
 }
 
 export interface ProductAttribute {
   id: number
   name: string
   lists: string[]
+  _delete?: boolean
 }
 
 export interface ProductInformation {
   id: number
   name: string
   description: string
+  _delete?: boolean
 }

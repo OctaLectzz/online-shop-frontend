@@ -31,6 +31,7 @@ export const createUser = async (values: UserFormValues): Promise<User> => {
       'Content-Type': 'multipart/form-data'
     }
   })
+
   return data.data
 }
 
@@ -54,6 +55,7 @@ export const updateUser = async (values: UserFormValues & { id: number }): Promi
       'Content-Type': 'multipart/form-data'
     }
   })
+
   return data.data
 }
 

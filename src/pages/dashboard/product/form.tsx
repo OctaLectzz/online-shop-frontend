@@ -39,12 +39,10 @@ export function ProductForm() {
       sku: '',
       name: '',
       description: '',
-      dimensions: {
-        weight: 0,
-        height: null,
-        width: null,
-        length: null
-      },
+      weight: 0,
+      height: null,
+      width: null,
+      length: null,
       status: true,
       use_variant: false,
       images: [],
@@ -77,9 +75,10 @@ export function ProductForm() {
   })
 
   const {
-    fields: infoFields,
-    append: addInfo,
-    remove: removeInfo
+    fields: informationFields,
+    append: addInformation,
+    update: updateInformation,
+    remove: removeInformation
   } = useFieldArray({
     control: form.control,
     name: 'informations'
@@ -93,12 +92,10 @@ export function ProductForm() {
         sku: product.sku,
         name: product.name,
         description: product.description,
-        dimensions: {
-          weight: product.dimensions.weight ?? null,
-          height: product.dimensions.height ?? null,
-          width: product.dimensions.width ?? null,
-          length: product.dimensions.length ?? null
-        },
+        weight: product.weight ?? null,
+        height: product.height ?? null,
+        width: product.width ?? null,
+        length: product.length ?? null,
         status: Boolean(product.status),
         use_variant: product.use_variant,
         images: undefined,
@@ -108,17 +105,20 @@ export function ProductForm() {
           name: variant.name,
           price: variant.price,
           stock: variant.stock,
-          image: null
+          image: variant.image ?? null,
+          _delete: false
         })),
         attributes: product.attributes.map((attribute) => ({
           id: attribute.id ?? undefined,
           name: attribute.name,
-          lists: attribute.lists
+          lists: attribute.lists,
+          _delete: false
         })),
         informations: product.informations.map((information) => ({
           id: information.id ?? undefined,
           name: information.name,
-          description: information.description
+          description: information.description,
+          _delete: false
         })),
         tags: product.tags
       })
@@ -186,7 +186,7 @@ export function ProductForm() {
 
             <ProductAttributesCard form={form} fields={attributeFields} addAttribute={addAttribute} updateAttribute={updateAttribute} removeAttribute={removeAttribute} />
 
-            <ProductInformationsCard form={form} fields={infoFields} addInfo={addInfo} removeInfo={removeInfo} />
+            <ProductInformationsCard form={form} fields={informationFields} addInformation={addInformation} updateInformation={updateInformation} removeInformation={removeInformation} />
 
             <ProductTagsCard form={form} />
 

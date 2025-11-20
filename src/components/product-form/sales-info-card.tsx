@@ -13,7 +13,7 @@ import { productVariantSchema, type ProductVariantForm } from '@/schemas/product
 import { formatIDR } from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, type FieldArrayWithId, type UseFieldArrayAppend, type UseFieldArrayRemove, type UseFieldArrayUpdate, type UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -43,6 +43,67 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
   const useVariant = form.watch('use_variant')
   const variants = form.watch('variants') ?? []
 
+  const activeVariants = fields.filter((_, index) => {
+    const variant = form.watch(`variants.${index}`)
+    return !variant?._delete
+  })
+
+  useEffect(() => {
+    const current = form.getValues('variants') ?? []
+
+    if (!useVariant) {
+      // SINGLE mode
+      if (current.length === 0) {
+        form.setValue(
+          'variants',
+          [
+            {
+              id: undefined,
+              name: 'no_variant',
+              price: 0,
+              stock: 0,
+              image: null,
+              _delete: false
+            }
+          ],
+          { shouldDirty: true }
+        )
+      } else {
+        form.setValue(
+          'variants.0',
+          {
+            ...current[0],
+            name: current[0].name || 'no_variant',
+            _delete: false
+          },
+          { shouldDirty: true }
+        )
+
+        current.slice(1).forEach((v, i) => {
+          const realIndex = i + 1
+          if (!v) return
+
+          if (v.id) {
+            updateVariant(realIndex, { ...v, _delete: true })
+          } else {
+            removeVariant(realIndex)
+          }
+        })
+      }
+    } else {
+      // MULTI mode
+      if (current.length === 1 && current[0]?.name === 'no_variant') {
+        const first = current[0]
+
+        if (first?.id) {
+          updateVariant(0, { ...first, _delete: true })
+        } else {
+          removeVariant(0)
+        }
+      }
+    }
+  }, [useVariant, form, updateVariant, removeVariant])
+
   const resetVariantForm = () => {
     variantForm.reset({
       id: undefined,
@@ -61,62 +122,39 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
     }
   }
 
-  const handleAddClick = () => {
+  const handleAddVariant = () => {
     resetVariantForm()
     setOpen(true)
   }
 
-  const handleEditClick = (index: number) => {
-    const v = form.getValues(`variants.${index}`)
+  const handleEditVariant = (index: number) => {
+    const variant = form.getValues(`variants.${index}`)
     variantForm.reset({
-      id: v?.id,
-      name: v?.name ?? '',
-      price: v?.price ?? 0,
-      stock: v?.stock ?? 0,
-      image: null
+      id: variant?.id,
+      name: variant?.name ?? '',
+      price: variant?.price ?? 0,
+      stock: variant?.stock ?? 0,
+      image: variant?.image ?? undefined
     })
     setEditIndex(index)
     setOpen(true)
   }
 
+  const handleDeleteVariant = (index: number) => {
+    const variant = form.getValues(`variants.${index}`)
+
+    if (variant?.id) {
+      updateVariant(index, {
+        ...variant,
+        _delete: true
+      })
+    } else {
+      removeVariant(index)
+    }
+  }
+
   const handleToggleVariantMode = (value: boolean) => {
     form.setValue('use_variant', value, { shouldDirty: true })
-
-    const current = form.getValues('variants') ?? []
-
-    if (!value) {
-      // SINGLE MODE
-      if (current.length === 0) {
-        form.setValue(
-          'variants',
-          [
-            {
-              id: undefined,
-              name: 'no_variant',
-              price: 0,
-              stock: 0,
-              image: null
-            }
-          ],
-          { shouldDirty: true }
-        )
-      } else {
-        form.setValue(
-          'variants',
-          [
-            {
-              ...current[0],
-              name: current[0].name || 'no_variant'
-            }
-          ],
-          { shouldDirty: true }
-        )
-      }
-    } else {
-      if (current.length === 1 && current[0]?.name === 'no_variant') {
-        form.setValue('variants', [], { shouldDirty: true })
-      }
-    }
   }
 
   const onSubmitVariant = (values: ProductVariantForm) => {
@@ -153,7 +191,9 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
           render={() => (
             <FormItem>
               <CardHeader className="flex flex-row items-center justify-between gap-2">
-                <CardTitle className="font-bold">{t('dashboard.product.salesInformation')}</CardTitle>
+                <CardTitle className="font-bold">
+                  {t('dashboard.product.salesInformation')} <span className="text-red-500">*</span>
+                </CardTitle>
 
                 <div className="flex items-center gap-2 space-y-0">
                   <span className="text-muted-foreground text-xs">{useVariant ? t('dashboard.product.variantModeMultiple') : t('dashboard.product.variantModeSingle')}</span>
@@ -223,44 +263,46 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
                 {useVariant && (
                   <>
                     <div className="space-y-2">
-                      {fields.length === 0 && (
+                      {activeVariants.length === 0 && (
                         <div className="flex items-center justify-center gap-4 rounded-md border p-3">
                           <div className="text-muted-foreground text-center text-xs">{t('dashboard.product.variantEmpty')}</div>
                         </div>
                       )}
 
                       {fields.map((field, index) => {
-                        const v = variants[index]
-
+                        const variant = variants[index]
                         let imageSrc: string | undefined
-                        if (typeof v?.image === 'string') {
-                          imageSrc = v.image
-                        } else if (v?.image instanceof File) {
-                          imageSrc = URL.createObjectURL(v.image)
+
+                        if (typeof variant?.image === 'string') {
+                          imageSrc = variant.image
+                        } else if (variant?.image instanceof File) {
+                          imageSrc = URL.createObjectURL(variant.image)
                         }
+
+                        if (variant?._delete) return null
 
                         return (
                           <div key={field.id} className="flex items-center justify-between gap-4 rounded-md border p-3">
                             <div className="flex flex-1 items-center gap-3">
-                              <ImagePreview src={imageSrc} alt={v?.name ?? 'Variant'} initials={v?.name || 'V'} className="h-10 w-10" />
+                              <ImagePreview src={imageSrc} alt={variant?.name ?? 'Variant'} initials={variant?.name || 'V'} className="h-10 w-10" />
 
                               <div className="space-y-0.5">
-                                <LongText className="text-sm leading-none font-medium">{v?.name || t('dashboard.product.unnamedVariant')}</LongText>
-                                <p className="text-muted-foreground text-xs">{formatIDR(v?.price ?? 0)}</p>
+                                <LongText className="text-sm leading-none font-medium">{variant?.name || t('dashboard.product.unnamedVariant')}</LongText>
+                                <p className="text-muted-foreground text-xs">{formatIDR(variant?.price ?? 0)}</p>
                               </div>
                             </div>
 
                             <div className="text-right">
                               <p className="text-muted-foreground text-xs">{t('dashboard.product.stock')}</p>
-                              <p className="font-medium">{v?.stock ?? 0}</p>
+                              <p className="font-medium">{variant?.stock ?? 0}</p>
                             </div>
 
                             <div className="flex items-center gap-1">
-                              <Button type="button" variant="ghost" size="icon" className="text-muted-foreground hover:bg-muted h-7 w-7 p-1" onClick={() => handleEditClick(index)}>
+                              <Button type="button" variant="ghost" size="icon" className="text-muted-foreground hover:bg-muted h-7 w-7 p-1" onClick={() => handleEditVariant(index)}>
                                 <Pencil className="h-3.5 w-3.5" />
                               </Button>
 
-                              <Button type="button" variant="ghost" size="icon" className="h-7 w-7 p-1 text-red-600 hover:bg-red-100 hover:text-red-600" onClick={() => removeVariant(index)}>
+                              <Button type="button" variant="ghost" size="icon" className="h-7 w-7 p-1 text-red-600 hover:bg-red-100 hover:text-red-600" onClick={() => handleDeleteVariant(index)}>
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
@@ -270,7 +312,7 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
                     </div>
 
                     {/* Add variant button */}
-                    <Button type="button" variant="outline" size="sm" onClick={handleAddClick}>
+                    <Button type="button" variant="outline" size="sm" onClick={handleAddVariant}>
                       + {t('dashboard.product.addVariant')}
                     </Button>
 
@@ -308,14 +350,19 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
                 <FormField
                   control={variantForm.control}
                   name="image"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-center">
-                      <FormControl>
-                        <ImageUpload value={field.value ?? null} onChange={(file) => field.onChange(file)} currentImage={undefined} shape="square" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const fileValue = field.value instanceof File ? field.value : null
+                    const currentImage = typeof field.value === 'string' ? field.value : undefined
+
+                    return (
+                      <FormItem className="flex flex-col items-center">
+                        <FormControl>
+                          <ImageUpload value={fileValue} currentImage={currentImage} onChange={(file) => field.onChange(file)} shape="square" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
                 />
 
                 <div className="space-y-4 py-2">

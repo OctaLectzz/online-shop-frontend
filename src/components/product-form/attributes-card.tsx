@@ -36,6 +36,11 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
 
   const lists = attributeForm.watch('lists') ?? []
 
+  const activeAttributes = fields.filter((_, index) => {
+    const attribute = form.watch(`attributes.${index}`)
+    return !attribute?._delete
+  })
+
   const handleAddValue = () => {
     const trimmed = currentValue.trim()
     if (!trimmed) return
@@ -71,12 +76,12 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
     }
   }
 
-  const handleAddClick = () => {
+  const handleAddAttribute = () => {
     resetAttributeForm()
     setOpen(true)
   }
 
-  const handleEditClick = (index: number) => {
+  const handleEditAttribute = (index: number) => {
     const attr = form.getValues(`attributes.${index}`)
     attributeForm.reset({
       id: attr?.id,
@@ -86,6 +91,19 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
     setCurrentValue('')
     setEditIndex(index)
     setOpen(true)
+  }
+
+  const handleDeleteAttribute = (index: number) => {
+    const attr = form.getValues(`attributes.${index}`)
+
+    if (attr?.id) {
+      updateAttribute(index, {
+        ...attr,
+        _delete: true
+      })
+    } else {
+      removeAttribute(index)
+    }
   }
 
   const onSubmitAttribute = (values: ProductAttributeForm) => {
@@ -118,23 +136,25 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
       <CardContent className="w-full space-y-4 py-1">
         {/* List attributes */}
         <div className="space-y-2">
-          {fields.length === 0 && (
+          {activeAttributes.length === 0 && (
             <div className="flex items-center justify-center gap-4 rounded-md border p-3">
               <div className="text-muted-foreground text-center text-xs">{t('dashboard.product.attributesEmpty')}</div>
             </div>
           )}
 
           {fields.map((field, index) => {
-            const attr = form.watch(`attributes.${index}`)
+            const attribute = form.watch(`attributes.${index}`)
+
+            if (attribute?._delete) return null
 
             return (
               <div key={field.id} className="flex items-center justify-between gap-4 rounded-md border p-3">
                 <div className="space-y-1">
-                  <p className="text-sm font-medium">{attr?.name}</p>
+                  <p className="text-sm font-medium">{attribute?.name}</p>
 
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {attr?.lists?.length ? (
-                      attr.lists.map((value: string, i: number) => (
+                    {attribute?.lists?.length ? (
+                      attribute.lists.map((value: string, i: number) => (
                         <Badge key={`${value}-${i}`} variant="secondary">
                           {value}
                         </Badge>
@@ -146,11 +166,11 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
                 </div>
 
                 <div className="flex items-center gap-1">
-                  <Button type="button" variant="ghost" size="icon" className="text-muted-foreground hover:bg-muted h-7 w-7 p-1" onClick={() => handleEditClick(index)} aria-label={t('public.editText')}>
+                  <Button type="button" variant="ghost" size="icon" className="text-muted-foreground hover:bg-muted h-7 w-7 p-1" onClick={() => handleEditAttribute(index)} aria-label={t('public.editText')}>
                     <Pencil className="h-3.5 w-3.5" />
                   </Button>
 
-                  <Button type="button" variant="ghost" size="icon" className="h-7 w-7 p-1 text-red-600 hover:bg-red-100 hover:text-red-600" onClick={() => removeAttribute(index)} aria-label={t('public.deleteText')}>
+                  <Button type="button" variant="ghost" size="icon" className="h-7 w-7 p-1 text-red-600 hover:bg-red-100 hover:text-red-600" onClick={() => handleDeleteAttribute(index)} aria-label={t('public.deleteText')}>
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 </div>
@@ -160,7 +180,7 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
         </div>
 
         {/* Add attribute button */}
-        <Button type="button" variant="outline" size="sm" onClick={handleAddClick}>
+        <Button type="button" variant="outline" size="sm" onClick={handleAddAttribute}>
           + {t('dashboard.product.addAttribute')}
         </Button>
 
@@ -168,7 +188,7 @@ export function ProductAttributesCard({ form, fields, addAttribute, updateAttrib
         <Dialog open={open} onOpenChange={handleDialogChange}>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>{editIndex !== null ? t('dashboard.product.editAttributeTitle') : t('dashboard.product.addAttribute')}</DialogTitle>
+              <DialogTitle>{editIndex !== null ? t('dashboard.product.editAttributeTitle') : t('dashboard.product.addAttributeTitle')}</DialogTitle>
               <DialogDescription>{editIndex !== null ? t('dashboard.product.editAttributeDesc') : t('dashboard.product.addAttributeDesc')}</DialogDescription>
             </DialogHeader>
 

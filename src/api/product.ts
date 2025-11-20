@@ -27,6 +27,7 @@ export const createProduct = async (values: ProductFormValues): Promise<Product>
       'Content-Type': 'multipart/form-data'
     }
   })
+
   return data.data
 }
 
@@ -37,15 +38,40 @@ export const updateProduct = async (values: ProductFormValues & { slug: string }
 
   const formData = objectToFormData({
     ...values,
-    status: values.status === false ? 0 : 1,
-    use_variant: values.use_variant === false ? 0 : 1
+    status: values.status ? 1 : 0,
+    use_variant: values.use_variant ? 1 : 0,
+
+    keep_images: values.keep_images ?? [],
+    images: (values.images ?? []).filter((f) => f instanceof File) as File[],
+
+    variants: (values.variants ?? []).map((variant) => ({
+      ...variant,
+      id: variant.id ?? null,
+      _delete: variant._delete ? 1 : 0,
+      image: variant.image instanceof File ? variant.image : null
+    })),
+
+    attributes: (values.attributes ?? []).map((attribute) => ({
+      ...attribute,
+      id: attribute.id ?? null,
+      _delete: attribute._delete ? 1 : 0
+    })),
+
+    informations: (values.informations ?? []).map((information) => ({
+      ...information,
+      id: information.id ?? null,
+      _delete: information._delete ? 1 : 0
+    })),
+
+    tags: (values.tags ?? []).filter((t) => !!t)
   })
 
-  const { data } = await server.put<{ data: Product }>(`/product/${values.slug}`, formData, {
+  const { data } = await server.post<{ data: Product }>(`/product/${values.slug}?_method=PUT`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
   })
+
   return data.data
 }
 

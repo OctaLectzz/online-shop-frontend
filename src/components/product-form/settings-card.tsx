@@ -25,19 +25,19 @@ export function ProductSettingsCard({ form }: Props) {
         <div className="w-full space-y-6 py-1">
           <p className="text-sm font-medium">{t('dashboard.product.dimensions')}</p>
           <div className="grid gap-4 md:grid-cols-2">
-            {(['weight', 'height', 'width', 'length'] as const).map((dim) => {
-              const unit = dim === 'weight' ? 'gram' : 'cm'
+            {(['weight', 'height', 'width', 'length'] as const).map((dimension) => {
+              const unit = dimension === 'weight' ? 'gram' : 'cm'
 
               return (
                 <FormField
-                  key={dim}
+                  key={dimension}
                   control={form.control}
-                  name={`dimensions.${dim}`}
+                  name={dimension}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="gap-1">
-                        {t(`dashboard.product.${dim}`)}
-                        {dim === 'weight' && <span className="text-red-500">*</span>}
+                        {t(`dashboard.product.${dimension}`)}
+                        {dimension === 'weight' && <span className="text-red-500">*</span>}
                       </FormLabel>
 
                       <FormControl>

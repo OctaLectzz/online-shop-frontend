@@ -23,6 +23,7 @@ export const createCategory = async (values: CategoryFormValues): Promise<Catego
       'Content-Type': 'multipart/form-data'
     }
   })
+
   return data.data
 }
 
@@ -38,6 +39,7 @@ export const updateCategory = async (values: CategoryFormValues & { id: number }
       'Content-Type': 'multipart/form-data'
     }
   })
+
   return data.data
 }
 

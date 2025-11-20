@@ -34,7 +34,9 @@ export function ProductBasicInfoCard({ form }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg font-bold">{t('dashboard.product.basicInfo')}</CardTitle>
+        <CardTitle className="text-lg font-bold">
+          {t('dashboard.product.basicInfo')} <span className="text-red-500">*</span>
+        </CardTitle>
       </CardHeader>
 
       <CardContent className="w-full space-y-6 py-1">
@@ -97,7 +99,7 @@ export function ProductBasicInfoCard({ form }: Props) {
                   <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="PRD001" />
+                  <RestrictedInput {...field} placeholder="PRD001" uppercase noSpaces />
                 </FormControl>
                 <FormMessage />
               </FormItem>

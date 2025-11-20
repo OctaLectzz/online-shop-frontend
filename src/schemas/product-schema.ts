@@ -13,7 +13,11 @@ export const productVariantSchema = z.object({
   price: z.number().min(0, { message: t('public.validateMin0') }),
   stock: z.number().min(0, { message: t('public.validateMin0') }),
   sold: z.number().nullable().optional(),
-  image: z.instanceof(File).nullable().optional()
+  image: z
+    .union([z.string(), z.instanceof(File)])
+    .nullable()
+    .optional(),
+  _delete: z.boolean().optional()
 })
 
 // Attributes
@@ -23,7 +27,8 @@ export const productAttributeSchema = z.object({
     .string()
     .min(1, { message: t('dashboard.product.validate.attributeNameRequired') })
     .max(255, { message: t('dashboard.product.validate.attributeNameMax') }),
-  lists: z.array(z.string().min(1)).min(1, { message: t('dashboard.product.validate.attributeListsMin') })
+  lists: z.array(z.string().min(1)).min(1, { message: t('dashboard.product.validate.attributeListsMin') }),
+  _delete: z.boolean().optional()
 })
 
 // Informations
@@ -33,15 +38,8 @@ export const productInformationSchema = z.object({
     .string()
     .min(1, { message: t('dashboard.product.validate.infoNameRequired') })
     .max(255, { message: t('dashboard.product.validate.infoNameMax') }),
-  description: z.string().min(1, { message: t('dashboard.product.validate.infoDescriptionRequired') })
-})
-
-// Dimensions
-export const productDimensionsSchema = z.object({
-  weight: z.number({ message: t('public.validateMin0') }).min(0, { message: t('public.validateMin0') }),
-  height: z.number().optional().nullable(),
-  width: z.number().optional().nullable(),
-  length: z.number().optional().nullable()
+  description: z.string().min(1, { message: t('dashboard.product.validate.infoDescriptionRequired') }),
+  _delete: z.boolean().optional()
 })
 
 // Base Product schema (form)
@@ -51,18 +49,19 @@ export const productSchema = z.object({
     .string()
     .min(1, { message: t('dashboard.product.validate.skuRequired') })
     .max(255, { message: t('dashboard.product.validate.skuMax') }),
-  name: z
-    .string()
-    .min(1, { message: t('dashboard.product.validate.nameRequired') })
-    .max(255, { message: t('dashboard.product.validate.nameMax') }),
   slug: z
     .string()
     .min(1, { message: t('dashboard.product.validate.slugRequired') })
     .max(255, { message: t('dashboard.product.validate.slugMax') }),
+  name: z
+    .string()
+    .min(1, { message: t('dashboard.product.validate.nameRequired') })
+    .max(255, { message: t('dashboard.product.validate.nameMax') }),
   description: z.string().min(1, { message: t('dashboard.product.validate.descriptionRequired') }),
-
-  // dimensions & status
-  dimensions: productDimensionsSchema,
+  weight: z.number({ message: t('public.validateMin0') }).min(0, { message: t('public.validateMin0') }),
+  height: z.number().optional().nullable(),
+  width: z.number().optional().nullable(),
+  length: z.number().optional().nullable(),
   status: z.boolean(),
   use_variant: z.boolean().default(false),
 
