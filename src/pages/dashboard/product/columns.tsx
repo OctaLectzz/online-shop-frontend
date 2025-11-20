@@ -22,7 +22,7 @@ function ProductActionsCell({ product }: { product: Product }) {
   const navigate = useNavigate()
 
   const handleEdit = () => {
-    navigate(`edit/${product.slug}`)
+    navigate(`/dashboard/product/edit/${product.slug}`)
   }
 
   const handleDelete = () => {

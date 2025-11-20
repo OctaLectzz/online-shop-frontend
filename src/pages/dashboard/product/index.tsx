@@ -71,7 +71,7 @@ function ProductContent() {
         </div>
 
         <div className="flex gap-2">
-          <Button className="space-x-1" onClick={() => navigate('create')} disabled={isPending}>
+          <Button className="space-x-1" onClick={() => navigate('/dashboard/product/create')} disabled={isPending}>
             <span>
               {t('public.createText')} {t('dashboard.product.title')}
             </span>

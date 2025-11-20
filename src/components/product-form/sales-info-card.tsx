@@ -13,7 +13,7 @@ import { productVariantSchema, type ProductVariantForm } from '@/schemas/product
 import { formatIDR } from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm, type FieldArrayWithId, type UseFieldArrayAppend, type UseFieldArrayRemove, type UseFieldArrayUpdate, type UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -47,62 +47,6 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
     const variant = form.watch(`variants.${index}`)
     return !variant?._delete
   })
-
-  useEffect(() => {
-    const current = form.getValues('variants') ?? []
-
-    if (!useVariant) {
-      // SINGLE mode
-      if (current.length === 0) {
-        form.setValue(
-          'variants',
-          [
-            {
-              id: undefined,
-              name: 'no_variant',
-              price: 0,
-              stock: 0,
-              image: null,
-              _delete: false
-            }
-          ],
-          { shouldDirty: true }
-        )
-      } else {
-        form.setValue(
-          'variants.0',
-          {
-            ...current[0],
-            name: current[0].name || 'no_variant',
-            _delete: false
-          },
-          { shouldDirty: true }
-        )
-
-        current.slice(1).forEach((v, i) => {
-          const realIndex = i + 1
-          if (!v) return
-
-          if (v.id) {
-            updateVariant(realIndex, { ...v, _delete: true })
-          } else {
-            removeVariant(realIndex)
-          }
-        })
-      }
-    } else {
-      // MULTI mode
-      if (current.length === 1 && current[0]?.name === 'no_variant') {
-        const first = current[0]
-
-        if (first?.id) {
-          updateVariant(0, { ...first, _delete: true })
-        } else {
-          removeVariant(0)
-        }
-      }
-    }
-  }, [useVariant, form, updateVariant, removeVariant])
 
   const resetVariantForm = () => {
     variantForm.reset({
@@ -155,6 +99,58 @@ export function ProductSalesInfoCard({ form, fields, addVariant, updateVariant, 
 
   const handleToggleVariantMode = (value: boolean) => {
     form.setValue('use_variant', value, { shouldDirty: true })
+    const current = form.getValues('variants') ?? []
+
+    if (!value) {
+      if (current.length === 0) {
+        form.setValue(
+          'variants',
+          [
+            {
+              id: undefined,
+              name: 'no_variant',
+              price: 0,
+              stock: 0,
+              image: null,
+              _delete: false
+            }
+          ],
+          { shouldDirty: true }
+        )
+      } else {
+        form.setValue(
+          'variants.0',
+          {
+            ...current[0],
+            name: current[0].name || 'no_variant',
+            _delete: false
+          },
+          { shouldDirty: true }
+        )
+
+        current.slice(1).forEach((v, i) => {
+          const realIndex = i + 1
+
+          if (!v) return
+
+          if (v.id) {
+            form.setValue(`variants.${realIndex}._delete`, true, { shouldDirty: true })
+          } else {
+            removeVariant(realIndex)
+          }
+        })
+      }
+    } else {
+      if (current.length === 1 && current[0]?.name === 'no_variant') {
+        const v = current[0]
+
+        if (v?.id) {
+          form.setValue('variants.0', { ...v, _delete: true }, { shouldDirty: true })
+        } else {
+          removeVariant(0)
+        }
+      }
+    }
   }
 
   const onSubmitVariant = (values: ProductVariantForm) => {

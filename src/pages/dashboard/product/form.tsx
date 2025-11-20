@@ -22,10 +22,9 @@ export function ProductForm() {
   const navigate = useNavigate()
   const { slug } = useParams<{ slug: string }>()
   const isEdit = !!slug
+  const schema = isEdit ? productUpdateSchema : productCreateSchema
 
   const { data: product, isLoading } = useProduct(isEdit ? slug! : '')
-
-  const schema = isEdit ? productUpdateSchema : productCreateSchema
   const { mutate: createProduct, isPending: isCreating } = useCreateProduct()
   const { mutate: updateProduct, isPending: isUpdating } = useUpdateProduct()
 
@@ -47,7 +46,16 @@ export function ProductForm() {
       use_variant: false,
       images: [],
       keep_images: [],
-      variants: [],
+      variants: [
+        {
+          id: undefined,
+          name: 'no_variant',
+          price: 0,
+          stock: 0,
+          image: null,
+          _delete: false
+        }
+      ],
       attributes: [],
       informations: [],
       tags: []
@@ -100,14 +108,25 @@ export function ProductForm() {
         use_variant: product.use_variant,
         images: undefined,
         keep_images: product.images ?? [],
-        variants: product.variants.map((variant) => ({
-          id: variant.id ?? undefined,
-          name: variant.name,
-          price: variant.price,
-          stock: variant.stock,
-          image: variant.image ?? null,
-          _delete: false
-        })),
+        variants: (product.variants ?? []).length
+          ? product.variants.map((v) => ({
+              id: v.id,
+              name: v.name,
+              price: v.price,
+              stock: v.stock,
+              image: v.image,
+              _delete: false
+            }))
+          : [
+              {
+                id: undefined,
+                name: 'no_variant',
+                price: 0,
+                stock: 0,
+                image: null,
+                _delete: false
+              }
+            ],
         attributes: product.attributes.map((attribute) => ({
           id: attribute.id ?? undefined,
           name: attribute.name,
@@ -126,8 +145,6 @@ export function ProductForm() {
   }, [product, isEdit, form])
 
   const onSubmit = (values: ProductFormValues) => {
-    console.log('SUBMIT OK', values)
-
     if (isEdit && product) {
       updateProduct(
         { ...values, slug: product.slug },
@@ -140,10 +157,6 @@ export function ProductForm() {
         onSuccess: () => navigate('/dashboard/product')
       })
     }
-  }
-
-  const onInvalid = (errors: typeof form.formState.errors) => {
-    console.log('SUBMIT INVALID', errors)
   }
 
   if (isEdit && isLoading) {
@@ -165,14 +178,14 @@ export function ProductForm() {
           <p className="text-muted-foreground text-xs">{isEdit ? t('dashboard.product.editDesc') : t('dashboard.product.createDesc')}</p>
         </div>
 
-        <Button variant="outline" onClick={() => navigate(-1)}>
+        <Button variant="outline" onClick={() => navigate('/dashboard/product')}>
           {t('public.backText')}
         </Button>
       </div>
 
       {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-6">
             <ProductMediaCard form={form} product={product} isEdit={isEdit} />
 
